@@ -543,3 +543,11 @@
   padding-top: 1rem; /* pt-4 */
   border-top: 1px solid #e5e7eb; /* border-t */
 }
+
+.fallback {
+  padding: 1rem;
+  text-align: center;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #6b7280;
+}

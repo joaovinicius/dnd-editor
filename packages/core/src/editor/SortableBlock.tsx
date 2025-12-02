@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { Trash, ArrowUp, ArrowDown, GripVertical, CornerLeftUp } from 'lucide-react';
@@ -122,7 +122,9 @@ export const SortableBlock = ({
       <div className={styles.componentWrapper}>
         <BlockContext.Provider value={{ parentId: block.id }}>
           {Component ? (
-            <Component {...block.props} />
+            <Suspense fallback={<div className={styles.fallback}>Loading...</div>}>
+              <Component {...block.props} />
+            </Suspense>
           ) : (
             <div className={styles.componentError}>
               Component <strong>{block.type}</strong> not found.

@@ -12,7 +12,9 @@ import {
   DragOverEvent,
   defaultDropAnimationSideEffects,
   DropAnimation,
-  useDraggable
+  useDraggable,
+  closestCorners,
+  MeasuringStrategy
 } from '@dnd-kit/core';
 import { arrayMove } from '@dnd-kit/sortable';
 import { nanoid } from 'nanoid';
@@ -307,6 +309,12 @@ export const PageEditor = ({ config, initialData, onSave }: EditorProps) => {
     }}>
       <DndContext
         sensors={sensors}
+        collisionDetection={closestCorners}
+        measuring={{
+          droppable: {
+            strategy: MeasuringStrategy.Always,
+          }
+        }}
         onDragStart={handleDragStart}
         onDragOver={handleDragOver}
         onDragEnd={handleDragEnd}
