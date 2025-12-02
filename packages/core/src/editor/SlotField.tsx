@@ -6,7 +6,6 @@ import { PageDataBlock } from '../types';
 import { SortableBlock } from './SortableBlock';
 import { useBlockContext } from './BlockContext';
 import { EditorContext } from './EditorContext';
-import styles from './style.module.css'; // Importing the CSS Module
 
 interface SlotFieldProps {
   name: string;
@@ -31,11 +30,11 @@ export const SlotField = ({ name, blocks }: SlotFieldProps) => {
     <div
       ref={setNodeRef}
       className={clsx(
-        styles.slotField,
+        "slotField",
         // Apply Root OR Nested style
-        isRoot ? styles.slotRoot : styles.slotNested,
+        isRoot ? "slotRoot" : "slotNested",
         // Apply Hover style if dragging over
-        isOver && styles.slotOver
+        isOver && "slotOver"
       )}
     >
       <SortableContext
@@ -60,7 +59,7 @@ export const SlotField = ({ name, blocks }: SlotFieldProps) => {
         ))}
 
         {blocks.length === 0 && (
-          <div className={styles.slotEmpty}>
+          <div className="slotEmpty">
             {isRoot ? "Drag components here to start" : `Slot: ${name} (Empty)`}
           </div>
         )}

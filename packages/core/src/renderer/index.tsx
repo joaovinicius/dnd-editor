@@ -11,9 +11,6 @@ interface PageRendererProps {
 export const PageRenderer = async ({ config, data }: PageRendererProps) => {
   if (!data?.blocks) return null;
 
-  return (
-    <div className="pb-renderer">
-      <RenderBlocks blocks={data.blocks} config={config} />
-    </div>
-  );
+  // @ts-ignore
+  return <RenderBlocks blocks={data.blocks} config={config} />;
 };

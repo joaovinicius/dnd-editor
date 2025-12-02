@@ -128,31 +128,30 @@ export const PageEditor = ({ config, initialData, onSave }: EditorProps) => {
   };
 
   const handleMove = (id: string, direction: 'up' | 'down') => {
-    const info = findContainer(blocks, id);
-    if (!info) return;
+    setBlocks(currentBlocks => {
+      const info = findContainer(currentBlocks, id);
+      if (!info) return currentBlocks; // No block found or invalid container
 
-    const index = info.container.findIndex(b => b.id === id);
-    if (index === -1) return;
+      const { container, parent, propName } = info;
+      const oldIndex = container.findIndex(b => b.id === id);
+      if (oldIndex === -1) return currentBlocks; // Block not found in container
 
-    let newIndex = direction === 'up' ? index - 1 : index + 1;
-    if (newIndex < 0 || newIndex >= info.container.length) return;
+      let newIndex = direction === 'up' ? oldIndex - 1 : oldIndex + 1;
+      // Ensure newIndex is within bounds
+      if (newIndex < 0 || newIndex >= container.length) return currentBlocks;
 
-    // Simplified deep clone
-    const newBlocks = JSON.parse(JSON.stringify(blocks));
-    // Re-locate in the cloned array
-    const targetInfo = findContainer(newBlocks, id);
+      // Create a new array with the block moved
+      const newContainer = arrayMove(container, oldIndex, newIndex);
 
-    if (targetInfo) {
-      targetInfo.container = arrayMove(targetInfo.container, index, newIndex);
-
-      if (targetInfo.parent && targetInfo.propName) {
-        targetInfo.parent.props[targetInfo.propName] = targetInfo.container;
+      if (parent && propName) {
+        // If the moved block is within a nested slot
+        // Use updateBlockInTree to immutably update the parent's specific slot property
+        return updateBlockInTree(currentBlocks, parent.id, { [propName]: newContainer });
       } else {
-        setBlocks(targetInfo.container);
-        return;
+        // If the moved block is at the root level
+        return newContainer;
       }
-      setBlocks(newBlocks);
-    }
+    });
   };
 
   // --- Drag and Drop Logic ---
@@ -206,8 +205,8 @@ export const PageEditor = ({ config, initialData, onSave }: EditorProps) => {
   };
 
   const handleDragEnd = (event: DragEndEvent) => {
-    setActiveDragItem(null);
     const { active, over } = event;
+    setActiveDragItem(null);
 
     if (!over) return;
 
@@ -221,32 +220,45 @@ export const PageEditor = ({ config, initialData, onSave }: EditorProps) => {
       };
 
       setBlocks(prev => {
-        const clone = JSON.parse(JSON.stringify(prev));
-
         if (over.data.current?.isSlot) {
-          // Dropped directly into an empty Slot area
           const { parentId, slotName } = over.data.current;
           if (parentId === 'root') {
-            clone.push(newBlock);
+            // Add to root level if dropped into root slot
+            return [...prev, newBlock];
           } else {
-            const parentBlock = findBlockById(clone, parentId);
+            // Add to nested slot
+            const parentBlock = findBlockById(prev, parentId);
             if (parentBlock && Array.isArray(parentBlock.props[slotName])) {
-              parentBlock.props[slotName].push(newBlock);
+              const newChildren = [...parentBlock.props[slotName], newBlock];
+              return updateBlockInTree(prev, parentId, { [slotName]: newChildren });
             }
           }
         } else {
-          // Dropped on an existing item
-          const overInfo = findContainer(clone, over.id as string);
+          // Dropped on an existing item, insert next to it
+          const overInfo = findContainer(prev, over.id as string);
           if (overInfo) {
-            const idx = overInfo.container.findIndex(b => b.id === over.id);
-            overInfo.container.splice(idx + 1, 0, newBlock);
+            const { container, parent, propName } = overInfo;
+            const idx = container.findIndex(b => b.id === over.id);
+            const newContainer = [...container.slice(0, idx + 1), newBlock, ...container.slice(idx + 1)];
+
+            if (parent && propName) {
+              return updateBlockInTree(prev, parent.id, { [propName]: newContainer });
+            } else {
+              // Root level insertion
+              return newContainer;
+            }
           } else {
-            clone.push(newBlock);
+            // Fallback: If no overInfo, add to root (should not happen if over is valid)
+            return [...prev, newBlock];
           }
         }
-        return clone;
+        return prev;
       });
-      setSelectedBlockId(newBlock.id);
+
+      // Defer selection to allow state update to settle and avoid race conditions
+      requestAnimationFrame(() => {
+        setSelectedBlockId(newBlock.id);
+      });
       return;
     }
 
@@ -277,6 +289,7 @@ export const PageEditor = ({ config, initialData, onSave }: EditorProps) => {
   };
 
   const selectedBlock = selectedBlockId ? findBlockById(blocks, selectedBlockId) : null;
+  const selectedBlockConfig = selectedBlock ? config[selectedBlock.type] : null;
 
   const dropAnimation: DropAnimation = {
     sideEffects: defaultDropAnimationSideEffects({ styles: { active: { opacity: '0.5' } } }),
@@ -341,8 +354,8 @@ export const PageEditor = ({ config, initialData, onSave }: EditorProps) => {
                       <button
                         onClick={() => setSelectedBlockId(node.id)}
                         className={clsx(
-                          styles.breadcrumbButton,
-                          node.id === selectedBlockId && styles.breadcrumbButtonActive
+                          "breadcrumbButton",
+                          node.id === selectedBlockId && "breadcrumbButtonActive"
                         )}
                         title={config[node.type]?.label || node.type}
                       >

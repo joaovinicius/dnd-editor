@@ -1,6 +1,6 @@
 import styles from './style.module.css';
 import { PageDataBlock, ConfigMap } from '../types';
-import {Suspense} from "react";
+import {Fragment, Suspense} from "react";
 
 interface RenderBlocksProps {
   blocks: PageDataBlock[];
@@ -45,12 +45,12 @@ export const RenderBlocks = async ({ blocks, config }: RenderBlocksProps) => {
 
     // Returns the component with individual Suspense for Streaming
     return (
-      <div key={block.id} data-block-id={block.id}>
+      <Fragment key={block.id} data-block-id={block.id}>
         <Suspense fallback={<div className={styles.fallback} />}>
           {/* @ts-ignore - TS sometimes complains about Async Components, but it's valid in Next.js 14 app router */}
           <Component {...resolvedProps} />
         </Suspense>
-      </div>
+      </Fragment>
     );
   }));
 
