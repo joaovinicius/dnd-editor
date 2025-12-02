@@ -1,0 +1,62 @@
+import { PageRenderer } from '@dnd-editor/core/src';
+import { config } from '../config/dnd-editor.config';
+
+// Simulando fetch de banco de dados
+async function getPageData() {
+  return {
+    blocks: [
+      {
+        "id": "HxhID9DX9adxKAWLXdQHX",
+        "type": "card",
+        "props": {
+          "title": "Meu Título",
+          "children": [
+            {
+              "id": "IfKsHx7Jw1h2HC13DOuhl",
+              "type": "cta",
+              "props": {
+                "text": "Clique aqui",
+                "url": "#"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "id": "Lncgja1QAoiYPbhlZjxNe",
+        "type": "features",
+        "props": {
+          "title": "Por que nós?",
+          "activeColor": "#2563eb"
+        }
+      },
+      {
+        "id": "sZvDawc9UuqOI6O47np1-",
+        "type": "hero",
+        "props": {
+          "title": "Hello World",
+          "padding": 40
+        }
+      },
+      {
+        "id": "cK7i_HKa4LLeo0TTYHpNY",
+        "type": "cta",
+        "props": {
+          "text": "Clique aqui",
+          "url": "#"
+        }
+      }
+    ]
+  };
+}
+
+export default async function Page() {
+  const data = await getPageData();
+
+  return (
+    <main>
+      {/* O Renderizador é leve e suporta SSR nativamente */}
+      <PageRenderer config={config} data={data} />
+    </main>
+  );
+}

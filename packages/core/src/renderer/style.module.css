@@ -1,0 +1,12 @@
+.fallback {
+  min-height: 10px;
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  background-color: #f3f4f6; /* bg-gray-100 to make it visible */
+  border-radius: 0.25rem;
+}
+
+@keyframes pulse {
+  50% {
+    opacity: .5;
+  }
+}

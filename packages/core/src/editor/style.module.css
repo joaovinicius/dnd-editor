@@ -1,0 +1,546 @@
+.container {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+/* Colunas */
+.sidebar {
+  width: 16rem; /* w-64 */
+  background-color: #f9fafb; /* bg-gray-50 */
+  border-right: 1px solid #e5e7eb;
+  padding: 1rem;
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+
+.canvas {
+  flex: 1;
+  background-color: #ffffff;
+  padding: 2rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.properties {
+  width: 20rem; /* w-80 */
+  background-color: #f9fafb;
+  border-left: 1px solid #e5e7eb;
+  padding: 1rem;
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+
+/* Elementos Internos */
+.canvasContent {
+  width: 100%;
+  max-width: 56rem; /* max-w-4xl */
+  min-height: 500px;
+  border: 1px dashed #d1d5db; /* border-gray-300 */
+  background-color: #ffffff;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  padding: 0;
+  transition: background-color 0.2s;
+}
+
+.draggableItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  margin-bottom: 0.5rem;
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.25rem;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  cursor: grab;
+  transition: border-color 0.2s;
+}
+
+.draggableItem:hover {
+  border-color: #3b82f6; /* blue-500 */
+}
+
+.sortableItem {
+  position: relative;
+  margin-bottom: 0;
+  /*border: 2px solid transparent;*/
+  padding: 0;
+  transition: all 0.2s;
+}
+
+.sortableItem:hover {
+  border-color: #60a5fa; /* blue-400 */
+}
+
+/* Estado Selecionado */
+.selected {
+  border-color: #3b82f6; /* blue-500 */
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+/* Formulários */
+.fieldGroup {
+  margin-bottom: 1rem;
+}
+
+.label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #6b7280; /* gray-500 */
+  margin-bottom: 0.25rem;
+}
+
+.input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  background-color: white;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  ring: 2px solid #3b82f6;
+}
+
+.saveButton {
+  margin-top: 1rem;
+  width: 100%;
+  background-color: #000000;
+  color: #ffffff;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  border: none;
+  font-weight: 500;
+}
+
+.saveButton:hover {
+  background-color: #1f2937;
+}
+
+.emptyState {
+  text-align: center;
+  color: #9ca3af;
+  padding: 2.5rem;
+}
+
+/* Barra de Ações do Bloco (Toolbar) */
+.blockToolbar {
+  position: absolute;
+  top: -12px;
+  right: 10px;
+  display: flex;
+  gap: 4px;
+  background-color: white;
+  border: 1px solid #e5e7eb;
+  padding: 4px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  opacity: 0;
+  transition: opacity 0.2s, top 0.2s;
+  z-index: 50;
+  pointer-events: auto; /* Garante que os botões sejam clicáveis */
+}
+
+/* Mostra a toolbar se estiver selecionado OU com hover */
+.sortableItem:hover .blockToolbar,
+.sortableItem.selected .blockToolbar {
+  opacity: 1;
+  top: -18px; /* Sobe um pouco para não cobrir o conteúdo */
+}
+
+.actionButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: transparent;
+  color: #6b7280;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.actionButton:hover {
+  background-color: #f3f4f6;
+  color: #111827;
+}
+
+.deleteButton:hover {
+  background-color: #fee2e2;
+  color: #ef4444;
+}
+
+/* Novos Inputs */
+.textarea {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  background-color: white;
+  min-height: 80px;
+  font-family: inherit;
+  resize: vertical;
+}
+
+.radioGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.radioLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  cursor: pointer;
+  color: #374151;
+}
+
+/* Container para o tipo Object (Aninhado) */
+.nestedContainer {
+  border-left: 2px solid #e5e7eb;
+  padding-left: 0.75rem;
+  margin-left: 0.25rem;
+  margin-bottom: 1rem;
+}
+
+/* Labels */
+.label {
+  /* ... (mantém o anterior) ... */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Estilo para o placeholder informativo do tipo "Slot" */
+.slotPlaceholder {
+  padding: 0.75rem;
+  font-size: 0.75rem; /* text-xs */
+  color: #6b7280; /* text-gray-500 */
+  background-color: #f3f4f6; /* bg-gray-100 */
+  border: 1px solid #e5e7eb; /* border-gray-200 */
+  border-radius: 0.375rem; /* rounded-md */
+  margin-top: 0.25rem;
+  line-height: 1.4;
+}
+
+/* Estilo para mensagens de erro ou tipos desconhecidos */
+.error {
+  color: #ef4444; /* text-red-500 */
+  font-size: 0.75rem; /* text-xs */
+  margin-top: 0.25rem;
+  font-style: italic;
+}
+
+/* Ajuste fino para o container de objetos aninhados */
+.nestedContainer {
+  border-left: 2px solid #e5e7eb;
+  padding-left: 0.75rem;
+  margin-left: 0.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem; /* Espaçamento entre campos internos */
+}
+
+/* --- Estilos para o SlotField (Áreas de Drop) --- */
+
+.slotField {
+  min-height: 50px;
+  transition: background-color 0.2s, border-color 0.2s;
+  box-sizing: border-box;
+}
+
+/* Slot Aninhado (dentro de outros componentes) */
+.slotNested {
+  padding: 0.5rem;
+  border: 1px dashed #d1d5db; /* gray-300 */
+  border-radius: 0.25rem;     /* rounded */
+  margin-top: 0.5rem;
+  background-color: #f9fafb;  /* gray-50 */
+}
+
+/* Slot Raiz (O Canvas Principal) */
+.slotRoot {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  /* A raiz não costuma ter borda dashed, é o fundo do canvas */
+}
+
+/* Estado de Hover (Quando arrasta algo por cima) */
+.slotOver {
+  background-color: #eff6ff; /* blue-50 */
+  border-color: #60a5fa;     /* blue-400 */
+  /* Se for aninhado, a borda muda de cor. Se for raiz, o fundo muda sutilmente */
+}
+
+/* Mensagem de Estado Vazio */
+.slotEmpty {
+  text-align: center;
+  font-size: 0.75rem; /* text-xs */
+  color: #9ca3af;     /* gray-400 */
+  padding: 1rem 0;
+  pointer-events: none; /* O texto não deve atrapalhar o drop */
+}
+
+/* Wrapper do componente renderizado */
+.componentWrapper {
+  position: relative;
+  min-height: 40px;
+}
+
+/* Máscara transparente que fica por cima do componente */
+/* Isso permite arrastar/selecionar sem clicar acidentalmente em links/inputs do componente */
+.componentMask {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  background-color: transparent;
+}
+
+/* Cursor específico para o ícone de arrastar */
+.dragHandle {
+  cursor: grab;
+}
+
+.dragHandle:active {
+  cursor: grabbing;
+}
+
+/* Mensagem de Erro (Componente não encontrado) */
+.componentError {
+  padding: 1rem;
+  background-color: #fef2f2; /* red-50 */
+  color: #ef4444;            /* red-500 */
+  font-size: 0.875rem;       /* text-sm */
+  border: 1px dashed #fca5a5; /* red-300 */
+  border-radius: 0.25rem;
+}
+
+/* Negrito dentro do erro */
+.componentError strong {
+  font-weight: 600;
+}
+
+/* --- Estilos do Painel (Sidebar/Properties) --- */
+
+.panelTitle {
+  font-weight: 700;
+  margin-bottom: 1rem;
+  font-size: 0.75rem; /* text-xs */
+  text-transform: uppercase;
+  color: #6b7280; /* text-gray-500 */
+}
+
+/* --- Cabeçalho de Propriedades (Item Selecionado) --- */
+
+.propHeaderRow {
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e5e7eb;
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.propHeaderLabel {
+  font-size: 0.75rem; /* text-xs */
+  font-weight: 700;
+  color: #2563eb; /* blue-600 */
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.propHeaderName {
+  font-weight: 500;
+  font-size: 0.875rem; /* text-sm */
+  margin: 0;
+}
+
+.propDeleteButton {
+  color: #ef4444; /* red-500 */
+  padding: 0.25rem;
+  border-radius: 0.25rem;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.propDeleteButton:hover {
+  background-color: #fef2f2; /* red-50 */
+}
+
+.propEmptyState {
+  color: #9ca3af; /* text-gray-400 */
+  font-size: 0.875rem; /* text-sm */
+  text-align: center;
+  margin-top: 2.5rem;
+}
+
+/* --- Overlay (Item sendo arrastado) --- */
+
+.overlayItem {
+  background-color: white;
+  opacity: 0.9;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); /* shadow-xl */
+  border: 1px solid #3b82f6; /* blue-500 */
+  transform: scale(1.05);
+  cursor: grabbing;
+}
+
+/* --- SortableBlock: Feedback Visual --- */
+
+/* Borda azul que aparece ao passar o mouse sobre o bloco */
+.hoverFeedback {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  border: 2px solid transparent;
+  border-radius: 0.25rem;
+  pointer-events: none; /* Não bloqueia cliques */
+  transition: border-color 0.2s ease;
+  z-index: 15; /* Acima do conteúdo, abaixo da toolbar */
+}
+
+/* Mostra a borda quando o mouse está sobre o item */
+.sortableItem:hover .hoverFeedback {
+  border-color: #93c5fd; /* blue-300 */
+}
+
+/* Esconde a borda de hover se o item já estiver selecionado (pois já tem a borda azul forte) */
+.sortableItem.selected .hoverFeedback {
+  display: none;
+}
+
+/* Toolbar: Aparece no hover ou se selecionado */
+.blockToolbar {
+  /* ... (propriedades existentes: position absolute, etc) ... */
+  display: flex; /* Garante display flex */
+  opacity: 0;    /* Invisível por padrão */
+  pointer-events: none; /* Não clicável quando invisível */
+}
+
+.sortableItem:hover .blockToolbar,
+.sortableItem.selected .blockToolbar {
+  opacity: 1;
+  pointer-events: auto; /* Clicável quando visível */
+  top: -24px; /* Sobe um pouco */
+}
+
+/* Wrapper do Componente: Garante posicionamento */
+.componentWrapper {
+  position: relative;
+  min-height: 40px;
+  /* Garante que o conteúdo não vaze */
+  isolation: isolate;
+}
+
+/* A máscara do componente atual */
+.componentMask {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 10; /* Z-index baixo */
+  background-color: transparent;
+  cursor: pointer;
+}
+
+/* O SlotField (área de drop) dentro do componente deve ficar ACIMA da máscara do pai */
+.slotField {
+  /* ... estilos anteriores ... */
+  position: relative; /* Necessário para z-index funcionar */
+  z-index: 20; /* Maior que a máscara do pai */
+}
+
+/* Properties Panel Content */
+.propertiesContent {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem; /* space-y-4 */
+}
+
+/* Breadcrumbs */
+.breadcrumbs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem; /* gap-1 */
+  margin-bottom: 1rem; /* mb-4 */
+  padding: 0.5rem; /* p-2 */
+  background-color: #f9fafb; /* bg-gray-50 */
+  border-radius: 0.25rem; /* rounded */
+  border: 1px solid #f3f4f6; /* border-gray-100 */
+  font-size: 0.75rem; /* text-xs */
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+.breadcrumbIcon {
+  color: #9ca3af; /* text-gray-400 */
+  margin-right: 0.25rem; /* mr-1 */
+}
+
+.breadcrumbChevron {
+  color: #d1d5db; /* text-gray-300 */
+}
+
+.breadcrumbButton {
+  color: #6b7280; /* text-gray-500 */
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  text-decoration: none;
+  max-width: 80px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.breadcrumbButton:hover {
+  color: #2563eb; /* hover:text-blue-600 */
+  text-decoration: underline;
+}
+
+.breadcrumbButtonActive {
+  font-weight: 700; /* font-bold */
+  color: #1d4ed8; /* text-blue-700 */
+}
+
+/* No Properties Message */
+.noProperties {
+  font-size: 0.75rem; /* text-xs */
+  color: #9ca3af; /* text-gray-400 */
+  font-style: italic;
+}
+
+/* Save Button Container */
+.saveButtonContainer {
+  margin-top: auto;
+  padding-top: 1rem; /* pt-4 */
+  border-top: 1px solid #e5e7eb; /* border-t */
+}
