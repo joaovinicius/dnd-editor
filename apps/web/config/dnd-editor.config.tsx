@@ -1,15 +1,16 @@
 import dynamic from 'next/dynamic';
-import { type ConfigMap } from '@dnd-editor/core/src';
+import { type ConfigMap } from '@dnd-editor/core';
 
 // IMPORTANTE: Lazy loading dos componentes
-const Card = dynamic(() => import('../components/Card')); // Novo
-const Grid = dynamic(() => import('../components/Grid')); // Novo
-const Hero = dynamic(() => import('../components/Hero'));
-const HeroFull = dynamic(() => import('../components/HeroFull'));
-const Features = dynamic(() => import('../components/Features'));
-const CallToAction = dynamic(() => import('../components/CallToAction'));
-const Navbar = dynamic(() => import('../components/Navbar'));
-const JlgNavbar = dynamic(() => import('../components/JlgNavbar'));
+const Card = dynamic(() => import(/* webpackChunkName: "component-card" */ '../components/Card')); // Novo
+const Grid = dynamic(() => import(/* webpackChunkName: "component-grid" */ '../components/Grid')); // Novo
+const Hero = dynamic(() => import(/* webpackChunkName: "component-hero" */ '../components/Hero'));
+const HeroFull = dynamic(() => import(/* webpackChunkName: "component-hero-full" */ '../components/HeroFull'));
+const Features = dynamic(() => import(/* webpackChunkName: "component-features" */ '../components/Features'));
+const CallToAction = dynamic(() => import(/* webpackChunkName: "component-cta" */ '../components/CallToAction'));
+
+const Navbar = dynamic(() => import(/* webpackChunkName: "component-navbar" */ '../components/NavbarWrapper'));
+const JlgNavbar = dynamic(() => import(/* webpackChunkName: "component-jlg-navbar" */ '../components/JlgNavbarWrapper'));
 
 export const config: ConfigMap = {
   grid: {

@@ -9,7 +9,7 @@
     "build:core": "pnpm --filter @dnd-editor/core build",
     "build:web": "pnpm --filter web build",
     "start": "pnpm --filter web start",
-    "dev": "pnpm -r --parallel run dev",
+    "dev": "pnpm build:core && pnpm -r --parallel run dev",
     "lint": "pnpm --filter web lint",
     "clean": "rm -rf node_modules **/*/node_modules **/*/dist **/*/.next"
   },

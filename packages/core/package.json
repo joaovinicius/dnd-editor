@@ -4,8 +4,27 @@
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./editor": {
+      "types": "./dist/editor/index.d.ts",
+      "import": "./dist/editor/index.mjs",
+      "require": "./dist/editor/index.js"
+    },
+    "./renderer": {
+      "types": "./dist/renderer/index.d.ts",
+      "import": "./dist/renderer/index.mjs",
+      "require": "./dist/renderer/index.js"
+    },
+    "./*": "./dist/*"
+  },
   "sideEffects": false,
   "scripts": {
+    "dev": "node build.mjs --watch",
     "build": "npm-run-all build:*",
     "build:js": "node build.mjs",
     "build:types": "tsc --emitDeclarationOnly --outDir dist"

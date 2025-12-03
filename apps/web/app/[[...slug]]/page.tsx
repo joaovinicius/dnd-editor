@@ -1,6 +1,6 @@
 import { mock } from '../../config/mock'
-import {PageRenderer} from "@dnd-editor/core/src";
-import {config} from "../../config/dnd-editor.config";
+import { trimConfig } from "@dnd-editor/core";
+import { PageRenderer } from "@dnd-editor/core/renderer";
 
 export const revalidate = 60;
 
@@ -16,9 +16,9 @@ export default async function Page(props: { params: Params }) {
 
   const fullRoute = `/${slug?.join('/') ?? ''}`;
   const page = mock.find(item => item.slug === fullRoute);
-
+  const { config } = await import("../../config/dnd-editor.config")
   const content = (page?.data || { blocks: [] });
+  const trimmedConfig = trimConfig(config, content.blocks);
 
-
-  return <PageRenderer config={config} data={content} />;
+  return <PageRenderer config={trimmedConfig} data={content} />;
 }

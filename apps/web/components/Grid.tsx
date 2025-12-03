@@ -1,5 +1,5 @@
 import React from 'react';
-import { Slot } from '@dnd-editor/core/src';
+import { Slot } from '@dnd-editor/core';
 
 interface GridProps {
   columns: number;

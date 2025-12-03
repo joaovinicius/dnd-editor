@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-interface NavbarProps {
+export type NavbarProps = {
   phone?: string;
 }
 

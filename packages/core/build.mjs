@@ -1,18 +1,19 @@
 import * as esbuild from 'esbuild';
 import { rm } from 'fs/promises';
 
-async function build() {
-  // Clean dist
-  await rm('dist', { recursive: true, force: true });
+const args = process.argv.slice(2);
+const isWatch = args.includes('--watch');
 
-  const sharedConfig = {
-    entryPoints: [
-      'src/index.ts', 
-      'src/editor/index.tsx', 
-      'src/renderer/index.tsx'
-    ],
+async function build() {
+  // Clean dist only if not in watch mode to avoid race conditions with consumers
+  if (!isWatch) {
+    await rm('dist', { recursive: true, force: true });
+  }
+
+  const commonConfig = {
     bundle: true,
-    minify: true,
+    minify: !isWatch,
+    sourcemap: isWatch,
     treeShaking: true,
     external: [
       'react', 
@@ -29,29 +30,50 @@ async function build() {
       '.tsx': 'tsx',
       '.ts': 'ts'
     },
-    outdir: 'dist',
     logLevel: 'info',
+    outdir: 'dist',
+  };
+
+  const entryPoints = {
+    'index': 'src/index.ts',
+    'editor/index': 'src/editor/index.tsx',
+    'renderer/index': 'src/renderer/index.tsx'
+  };
+
+  const esmConfig = {
+    ...commonConfig,
+    entryPoints,
+    format: 'esm',
+    splitting: true,
+    outExtension: { '.js': '.mjs' },
+  };
+
+  const cjsConfig = {
+    ...commonConfig,
+    entryPoints,
+    format: 'cjs',
+    splitting: false, // CJS does not support splitting
+    outExtension: { '.js': '.js' },
   };
 
   try {
-    // Build ESM
-    console.log('Building ESM...');
-    await esbuild.build({
-      ...sharedConfig,
-      format: 'esm',
-      splitting: true,
-      outExtension: { '.js': '.mjs' },
-    });
+    if (isWatch) {
+      console.log('Starting watch mode...');
+      const ctxEsm = await esbuild.context(esmConfig);
+      const ctxCjs = await esbuild.context(cjsConfig);
+      
+      await Promise.all([ctxEsm.watch(), ctxCjs.watch()]);
+      console.log('Watching for changes...');
+    } else {
+      console.log('Building ESM...');
+      await esbuild.build(esmConfig);
 
-    // Build CJS
-    console.log('Building CJS...');
-    await esbuild.build({
-      ...sharedConfig,
-      format: 'cjs',
-      outExtension: { '.js': '.js' },
-    });
-    
-    console.log('Build complete.');
+      console.log('Building CJS...');
+      await esbuild.build(cjsConfig);
+      
+      console.log('Build complete.');
+    }
+
   } catch (e) {
     console.error('Build failed:', e);
     process.exit(1);

@@ -2,13 +2,13 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-interface NavbarProps {
+export type JlgNavbarProps = {
   phone?: string;
 }
 
 const scrollYPositionTrigger = 130;
 
-export default function JlgNavbar({ phone = '1-888-888-8888' }: NavbarProps) {
+export default function JlgNavbar({ phone = '1-888-888-8888' }: JlgNavbarProps) {
   const [isScrolled, setIsScrolled] = useState(false);
 
   // Lightweight rAF-based throttle to avoid pulling lodash/throttle
