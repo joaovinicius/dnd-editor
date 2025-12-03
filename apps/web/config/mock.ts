@@ -74,14 +74,28 @@ export const mock = [
     data: {
       blocks: [
         {
-          "id": "YNrjghqA20vxtOgbxZReu",
-          "type": "grid",
+          "id": "Y-Q-kTqsxvpEL-jUS0O5K",
+          "type": "jlgNavbar",
           "props": {
-            "columns": 2,
-            "gap": 8,
+            "phone": "1-888-888-8888"
+          }
+        },
+        {
+          "id": "Nq7E_AS0UgYXKlKE4-tEh",
+          "type": "hero",
+          "props": {
+            "title": "Hello World",
+            "padding": 40
+          }
+        },
+        {
+          "id": "0hSXMbf0m4YOnF3xuaAUA",
+          "type": "card",
+          "props": {
+            "title": "Meu Título",
             "children": [
               {
-                "id": "JgHarmCT8gT7yg_JfBQWR",
+                "id": "7iQkhLN2coadNuOWVETD3",
                 "type": "features",
                 "props": {
                   "title": "Por que nós?",
@@ -92,33 +106,7 @@ export const mock = [
           }
         },
         {
-          "id": "Kpt0ugv9D1nCVd5p0YFGi",
-          "type": "grid",
-          "props": {
-            "columns": 2,
-            "gap": 8,
-            "children": [
-              {
-                "id": "sOgSfiqUdh_vsSpF_IbSm",
-                "type": "cta",
-                "props": {
-                  "text": "Clique aqui",
-                  "url": "#"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "id": "WYXiPai4VJmIspckn-_Ww",
-          "type": "cta",
-          "props": {
-            "text": "Clique aqui",
-            "url": "#"
-          }
-        },
-        {
-          "id": "mGEb7wR7cXD-52piwIu6_",
+          "id": "nCPLwh1JzApwoYH74lkUW",
           "type": "features",
           "props": {
             "title": "Por que nós?",
@@ -126,11 +114,26 @@ export const mock = [
           }
         },
         {
-          "id": "_NBZ_93QvSxw03J6SWVL4",
-          "type": "hero",
+          "id": "ynx4jGmxbfaG9CdpMlN49",
+          "type": "cta",
           "props": {
-            "title": "Hello World",
-            "padding": 40
+            "text": "Clique aqui",
+            "url": "#"
+          }
+        },
+        {
+          "id": "iJU32l__kyRnQPqH6PWGQ",
+          "type": "heroFull",
+          "props": {
+            "title": "Crie layouts incríveis\ncom alta performance.",
+            "description": "Este é um exemplo de componente complexo.",
+            "align": "center",
+            "padding": 80,
+            "cta": {
+              "label": "Saiba Mais",
+              "href": "#",
+              "style": "solid"
+            }
           }
         }
       ]
