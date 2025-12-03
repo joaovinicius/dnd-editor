@@ -9,6 +9,7 @@ const HeroFull = dynamic(() => import('../components/HeroFull'));
 const Features = dynamic(() => import('../components/Features'));
 const CallToAction = dynamic(() => import('../components/CallToAction'));
 const Navbar = dynamic(() => import('../components/Navbar'));
+const JlgNavbar = dynamic(() => import('../components/JlgNavbar'));
 
 export const config: ConfigMap = {
   grid: {
@@ -40,6 +41,13 @@ export const config: ConfigMap = {
     label: 'Navbar',
     fields: [
       { name: 'phone', label: 'Telefone', type: 'text', defaultValue: '1-833-662-8550' }
+    ]
+  },
+  jlgNavbar: {
+    component: JlgNavbar,
+    label: 'Navbar',
+    fields: [
+      { name: 'phone', label: 'Telefone', type: 'text', defaultValue: '1-888-888-8888' }
     ]
   },
   // 2. Configuração do Card
