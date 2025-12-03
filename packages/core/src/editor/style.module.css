@@ -44,6 +44,8 @@
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   padding: 0;
   transition: background-color 0.2s;
+  /* Creates a new containing block for position: fixed elements */
+  transform: translate(0);
 }
 
 .draggableItem {
@@ -147,7 +149,7 @@
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   opacity: 0;
   transition: opacity 0.2s, top 0.2s;
-  z-index: 50;
+  z-index: 100;
   pointer-events: auto; /* Garante que os botões sejam clicáveis */
 }
 
@@ -453,8 +455,6 @@
 .componentWrapper {
   position: relative;
   min-height: 40px;
-  /* Garante que o conteúdo não vaze */
-  isolation: isolate;
 }
 
 /* A máscara do componente atual */
@@ -464,7 +464,7 @@
   right: 0;
   bottom: 0;
   left: 0;
-  z-index: 10; /* Z-index baixo */
+  z-index: 50; /* Z-index baixo */
   background-color: transparent;
   cursor: pointer;
 }
