@@ -5,7 +5,7 @@ import { Trash, ArrowUp, ArrowDown, GripVertical, CornerLeftUp } from 'lucide-re
 import { clsx } from 'clsx';
 import { PageDataBlock, ConfigMap } from '../types';
 import { BlockContext } from './BlockContext';
-import styles from './style.module.css';
+import editor from './editor.module.css';
 
 interface SortableBlockProps {
   block: PageDataBlock;
@@ -62,18 +62,18 @@ export const SortableBlock = ({
       ref={setNodeRef}
       style={style}
       className={clsx(
-        styles.sortableItem,
-        isSelected && styles.selected
+        editor.sortableItem,
+        isSelected && editor.selected
         // We removed the 'group' class from Tailwind, the CSS Module handles :hover
       )}
       onClick={handleClick}
       data-block-id={block.id}
     >
       {/* --- Toolbar --- */}
-      <div className={styles.blockToolbar}>
+      <div className={editor.blockToolbar}>
         {parentId !== 'root' && (
           <button
-            className={styles.actionButton}
+            className={editor.actionButton}
             onClick={(e) => { e.stopPropagation(); onSelectParent(); }}
             title="Select Parent"
           >
@@ -82,7 +82,7 @@ export const SortableBlock = ({
         )}
 
         <button
-          className={styles.actionButton}
+          className={editor.actionButton}
           disabled={isFirst}
           onClick={(e) => { e.stopPropagation(); onMove(block.id, 'up'); }}
           title="Move Up"
@@ -91,7 +91,7 @@ export const SortableBlock = ({
         </button>
 
         <button
-          className={styles.actionButton}
+          className={editor.actionButton}
           disabled={isLast}
           onClick={(e) => { e.stopPropagation(); onMove(block.id, 'down'); }}
           title="Move Down"
@@ -103,14 +103,14 @@ export const SortableBlock = ({
         <div
           {...attributes}
           {...listeners}
-          className={clsx(styles.actionButton, styles.dragHandle)}
+          className={clsx(editor.actionButton, editor.dragHandle)}
           title="Drag"
         >
           <GripVertical size={14} />
         </div>
 
         <button
-          className={clsx(styles.actionButton, styles.deleteButton)}
+          className={clsx(editor.actionButton, editor.deleteButton)}
           onClick={(e) => { e.stopPropagation(); onRemove(block.id); }}
           title="Remove"
         >
@@ -119,14 +119,14 @@ export const SortableBlock = ({
       </div>
 
       {/* --- Component Content --- */}
-      <div className={styles.componentWrapper}>
+      <div className={editor.componentWrapper}>
         <BlockContext.Provider value={{ parentId: block.id }}>
           {Component ? (
-            <Suspense fallback={<div className={styles.fallback}>Loading...</div>}>
+            <Suspense fallback={<div className={editor.fallback}>Loading...</div>}>
               <Component {...block.props} />
             </Suspense>
           ) : (
-            <div className={styles.componentError}>
+            <div className={editor.componentError}>
               Component <strong>{block.type}</strong> not found.
             </div>
           )}
@@ -135,13 +135,13 @@ export const SortableBlock = ({
         {/* Interaction Mask (Prevents clicks on internal links when not selected) */}
         {!isSelected && (
           <div
-            className={styles.componentMask}
+            className={editor.componentMask}
             onClick={handleClick}
           />
         )}
 
         {/* Hover Feedback Border (Replacing the div with Tailwind classes) */}
-        <div className={styles.hoverFeedback} />
+        <div className={editor.hoverFeedback} />
       </div>
     </div>
   );

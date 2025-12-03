@@ -1,6 +1,6 @@
 import React from 'react';
 import { FieldDefinition } from '../types';
-import styles from './style.module.css';
+import editor from './editor.module.css';
 
 interface FieldRendererProps {
   field: FieldDefinition;
@@ -21,7 +21,7 @@ export const FieldRenderer = ({ field, value, onChange }: FieldRendererProps) =>
     case 'color':
       return (
         <input
-          className={styles.input}
+          className={editor.input}
           type={field.type}
           value={value ?? ''}
           onChange={handleInputChange}
@@ -32,7 +32,7 @@ export const FieldRenderer = ({ field, value, onChange }: FieldRendererProps) =>
     case 'textarea':
       return (
         <textarea
-          className={styles.textarea}
+          className={editor.textarea}
           value={value ?? ''}
           onChange={handleInputChange}
           rows={3}
@@ -41,7 +41,7 @@ export const FieldRenderer = ({ field, value, onChange }: FieldRendererProps) =>
 
     case 'select':
       return (
-        <select className={styles.input} value={value ?? ''} onChange={handleInputChange}>
+        <select className={editor.input} value={value ?? ''} onChange={handleInputChange}>
           <option value="" disabled>Selecione...</option>
           {field.options?.map((opt) => (
             <option key={opt.value} value={opt.value}>{opt.label}</option>
@@ -51,9 +51,9 @@ export const FieldRenderer = ({ field, value, onChange }: FieldRendererProps) =>
 
     case 'radio':
       return (
-        <div className={styles.radioGroup}>
+        <div className={editor.radioGroup}>
           {field.options?.map((opt) => (
-            <label key={opt.value} className={styles.radioLabel}>
+            <label key={opt.value} className={editor.radioLabel}>
               <input
                 type="radio"
                 name={field.name} // Importante para agrupar radios
@@ -69,10 +69,10 @@ export const FieldRenderer = ({ field, value, onChange }: FieldRendererProps) =>
 
     case 'object':
       return (
-        <div className={styles.nestedContainer}>
+        <div className={editor.nestedContainer}>
           {field.fields?.map((subField) => (
-            <div key={subField.name} className={styles.fieldGroup}>
-              <label className={styles.label}>{subField.label}</label>
+            <div key={subField.name} className={editor.fieldGroup}>
+              <label className={editor.label}>{subField.label}</label>
               <FieldRenderer
                 field={subField}
                 value={value?.[subField.name]}
@@ -90,14 +90,14 @@ export const FieldRenderer = ({ field, value, onChange }: FieldRendererProps) =>
 
     case 'slot':
       return (
-        <div className={styles.slotPlaceholder}>
+        <div className={editor.slotPlaceholder}>
           Conteúdo gerenciado via Drag & Drop na área de visualização.
         </div>
       );
 
     default:
       return (
-        <div className={styles.error}>
+        <div className={editor.error}>
           Tipo de campo desconhecido: {field.type}
         </div>
       );

@@ -12,7 +12,10 @@ async function build() {
 
   const commonConfig = {
     bundle: true,
-    minify: !isWatch,
+    // Granular minification settings
+    minifySyntax: !isWatch,
+    minifyWhitespace: !isWatch,
+    minifyIdentifiers: false, // Keep original identifiers to avoid CSS class collisions
     sourcemap: isWatch,
     treeShaking: true,
     external: [

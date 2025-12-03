@@ -27,7 +27,7 @@ import { FieldRenderer } from './FieldRenderer';
 import { EditorContext } from './EditorContext';
 import { SlotField } from './SlotField';
 import { BlockContext } from './BlockContext';
-import styles from './style.module.css';
+import editor from './editor.module.css';
 
 // Tree utilities (ensure they exist at src/utils/tree.ts)
 import { findContainer, findPathToNode, findBlockById } from '../utils/tree';
@@ -88,7 +88,7 @@ const DraggableSidebarItem = ({ type, label }: { type: string, label: string }) 
   });
 
   return (
-    <div ref={setNodeRef} {...listeners} {...attributes} className={styles.draggableItem}>
+    <div ref={setNodeRef} {...listeners} {...attributes} className={editor.draggableItem}>
       <GripVertical size={16} style={{ color: '#9ca3af' }} />
       {label}
     </div>
@@ -319,19 +319,19 @@ export const PageEditor = ({ config, initialData, onSave }: EditorProps) => {
         onDragOver={handleDragOver}
         onDragEnd={handleDragEnd}
       >
-        <div className={styles.container}>
+        <div className={editor.container}>
 
           {/* LEFT: Sidebar */}
-          <div className={styles.sidebar}>
-            <h3 className={styles.panelTitle}>Componentes</h3>
+          <div className={editor.sidebar}>
+            <h3 className={editor.panelTitle}>Componentes</h3>
             {Object.entries(config).map(([key, item]) => (
               <DraggableSidebarItem key={key} type={key} label={item.label} />
             ))}
           </div>
 
           {/* CENTER: Canvas */}
-          <div className={styles.canvas} onClick={() => setSelectedBlockId(null)}>
-            <div className={styles.canvasContent}>
+          <div className={editor.canvas} onClick={() => setSelectedBlockId(null)}>
+            <div className={editor.canvasContent}>
               {/* The root Canvas is a Slot with parentId='root' */}
               <BlockContext.Provider value={{ parentId: 'root' }}>
                 <SlotField name="root" blocks={blocks} />
@@ -340,25 +340,25 @@ export const PageEditor = ({ config, initialData, onSave }: EditorProps) => {
           </div>
 
           {/* RIGHT: Properties */}
-          <div className={styles.properties}>
-            <h3 className={styles.panelTitle}>Propriedades</h3>
+          <div className={editor.properties}>
+            <h3 className={editor.panelTitle}>Propriedades</h3>
 
             {selectedBlock ? (
-              <div className={styles.propertiesContent}>
+              <div className={editor.propertiesContent}>
 
                 {/* Breadcrumbs (Hierarchical Navigation) */}
-                <div className={styles.breadcrumbs}>
-                  <Layers size={12} className={styles.breadcrumbIcon} />
+                <div className={editor.breadcrumbs}>
+                  <Layers size={12} className={editor.breadcrumbIcon} />
                   <button
                     onClick={() => setSelectedBlockId(null)}
-                    className={styles.breadcrumbButton}
+                    className={editor.breadcrumbButton}
                   >
                     Raiz
                   </button>
 
                   {selectedPath.map((node) => (
                     <React.Fragment key={node.id}>
-                      <ChevronRight size={10} className={styles.breadcrumbChevron} />
+                      <ChevronRight size={10} className={editor.breadcrumbChevron} />
                       <button
                         onClick={() => setSelectedBlockId(node.id)}
                         className={clsx(
@@ -374,14 +374,14 @@ export const PageEditor = ({ config, initialData, onSave }: EditorProps) => {
                 </div>
 
                 {/* Edit Header */}
-                <div className={styles.propHeaderRow}>
+                <div className={editor.propHeaderRow}>
                   <div>
-                    <p className={styles.propHeaderLabel}>Editando</p>
-                    <p className={styles.propHeaderName}>{config[selectedBlock.type].label}</p>
+                    <p className={editor.propHeaderLabel}>Editando</p>
+                    <p className={editor.propHeaderName}>{config[selectedBlock.type].label}</p>
                   </div>
                   <button
                     onClick={() => handleRemove(selectedBlock.id)}
-                    className={styles.propDeleteButton}
+                    className={editor.propDeleteButton}
                     title="Excluir"
                   >
                     <Trash size={16} />
@@ -390,8 +390,8 @@ export const PageEditor = ({ config, initialData, onSave }: EditorProps) => {
 
                 {/* Input Fields */}
                 {config[selectedBlock.type].fields.map(field => (
-                  <div key={field.name} className={styles.fieldGroup}>
-                    <label className={styles.label}>{field.label}</label>
+                  <div key={field.name} className={editor.fieldGroup}>
+                    <label className={editor.label}>{field.label}</label>
                     <FieldRenderer
                       field={field}
                       value={selectedBlock.props[field.name]}
@@ -401,15 +401,15 @@ export const PageEditor = ({ config, initialData, onSave }: EditorProps) => {
                 ))}
 
                 {config[selectedBlock.type].fields.length === 0 && (
-                  <p className={styles.noProperties}>Este componente não possui propriedades.</p>
+                  <p className={editor.noProperties}>Este componente não possui propriedades.</p>
                 )}
               </div>
             ) : (
-              <p className={styles.propEmptyState}>Selecione um bloco para editar</p>
+              <p className={editor.propEmptyState}>Selecione um bloco para editar</p>
             )}
 
-            <div className={styles.saveButtonContainer}>
-              <button className={styles.saveButton} onClick={() => onSave({ blocks })}>
+            <div className={editor.saveButtonContainer}>
+              <button className={editor.saveButton} onClick={() => onSave({ blocks })}>
                 Salvar Página
               </button>
             </div>
@@ -419,7 +419,7 @@ export const PageEditor = ({ config, initialData, onSave }: EditorProps) => {
         {/* OVERLAY: Floating item during drag */}
         <DragOverlay dropAnimation={dropAnimation}>
           {activeDragItem ? (
-            <div className={clsx(styles.draggableItem, styles.overlayItem)}>
+            <div className={clsx(editor.draggableItem, editor.overlayItem)}>
               {activeDragItem.label || "Movendo..."}
             </div>
           ) : null}
