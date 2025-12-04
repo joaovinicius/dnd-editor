@@ -1,6 +1,7 @@
 import Hero from './hero';
 import dynamic from "next/dynamic";
 import { sanitizedContent } from '../../../lib/string';
+import Image from "next/image";
 
 const NavbarWrapper = dynamic(
   () => import(/* webpackChunkName: "component-jlg-navbar-wrapper" */ '../Navbar/navbar-wrapper'),
@@ -15,13 +16,7 @@ const ContactFormWrapper = dynamic(
 export type HeroHeadingProps = {
   title: string;
   subtitle?: string;
-  earningList: string[];
-  config?: {
-    titleColor?: string;
-    subtitleColor?: string;
-    checkIconColor?: string;
-    earningListColor?: string;
-  };
+  earningList: { earning: string }[];
   other?: {
     placeId?: string;
     phone?: string;
@@ -34,13 +29,23 @@ export function HeroHeading({ title,
                               earningList,
                               other }: HeroHeadingProps) {
   const earnings =
-    earningList?.map((item) => sanitizedContent(item)) ?? [];
+    earningList?.map((item) => sanitizedContent(item.earning)) ?? [];
 
   return (
     <div>
       <NavbarWrapper phone={other?.phone || 'X-XXX-XXX-XXXX'} />
-      <div className="w-full bg-[url(https://d3secykhf0toyz.cloudfront.net/no-bull-law/live/static/hero-background.webp)] bg-cover bg-center bg-no-repeat">
-        <div className="h-full w-full bg-black/60">
+      <div className="relative w-full">
+        <Image
+          src="https://d3secykhf0toyz.cloudfront.net/no-bull-law/live/static/hero-background.webp"
+          width={1920}
+          height={1080}
+          alt="hero-background"
+          className="absolute inset-0 h-full w-full object-cover"
+          priority
+          fetchPriority="high"
+          sizes="100vw"
+        />
+        <div className="relative z-10 h-full w-full bg-black/60">
           <div className="max-w-8xl mx-auto w-full px-0 pt-[150px] md:px-4 md:pt-[180px] lg:pt-[200px]">
             <Hero
               title={title ?? ''}

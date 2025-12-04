@@ -1,0 +1,39 @@
+.googleRatingReviews {
+  background-color: var(--background-color, revert);
+
+  padding-top: var(--padding-top-mobile, 0);
+  padding-right: var(--padding-right-mobile, 0);
+  padding-bottom: var(--padding-bottom-mobile, 0);
+  padding-left: var(--padding-left-mobile, 0);
+
+  border-radius: var(--border-radius-mobile, 0);
+
+  margin: var(--margin-mobile, 0);
+}
+
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .googleRatingReviews {
+    padding-top: var(--padding-top-tablet, var(--padding-top-mobile, 0));
+    padding-right: var(--padding-right-tablet, var(--padding-right-mobile, 0));
+    padding-bottom: var(--padding-bottom-tablet, var(--padding-bottom-mobile, 0));
+    padding-left: var(--padding-left-tablet, var(--padding-left-mobile, 0));
+
+    border-radius: var(--border-radius-tablet, var(--border-radius-mobile, 0));
+
+    margin: var(--margin-tablet, var(--margin-mobile, 0));
+  }
+}
+
+@media (min-width: 1024px) {
+  .googleRatingReviews {
+    padding-top: var(--padding-top-desktop, var(--padding-top-tablet, var(--padding-top-mobile, 0)));
+    padding-right: var(--padding-right-desktop, var(--padding-right-tablet, var(--padding-right-mobile, 0)));
+    padding-bottom: var(--padding-bottom-desktop, var(--padding-bottom-tablet, var(--padding-bottom-mobile, 0)));
+    padding-left: var(--padding-left-desktop, var(--padding-left-tablet, var(--padding-left-mobile, 0)));
+
+    border-radius: var(--border-radius-desktop, var(--border-radius-tablet, var(--border-radius-mobile, 0)));
+
+    margin: var(--margin-desktop, var(--margin-tablet, var(--margin-mobile, 0)));
+  }
+}

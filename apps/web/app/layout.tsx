@@ -1,11 +1,23 @@
 import type { Metadata, Viewport } from 'next';
-import { Inter } from 'next/font/google';
+import { Montserrat, Work_Sans } from 'next/font/google';
 import './globals.css';
 
-// 1. Otimização de Fontes (Crucial para CLS e LCP)
-// O Next.js baixa a fonte no build time e a serve como um asset estático,
-// eliminando a viagem extra ao servidor do Google Fonts e evitando layout shifts.
-const inter = Inter({ subsets: ['latin'] });
+const montserrat = Montserrat({
+  subsets: ['latin'],
+  display: 'swap',
+  preload: true,
+  weight: ['300', '400', '600', '700'],
+  variable: '--font-family-montserrat',
+  adjustFontFallback: true,
+});
+const workSans = Work_Sans({
+  subsets: ['latin'],
+  display: 'swap',
+  preload: true,
+  weight: ['300', '400', '600', '700'],
+  variable: '--font-family-work-sans',
+  adjustFontFallback: true,
+});
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -23,14 +35,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="pt-BR">
-    {/*
-        A classe da fonte é aplicada no body para herança global.
-        A estrutura deve ser limpa para não bloquear a renderização inicial.
-      */}
-    <body className={`${inter.className} min-h-screen bg-white text-slate-900`}>
-    {children}
-    </body>
+    <html lang="en">
+      <body className={`bg-brand-background ${montserrat.variable} ${workSans.variable} min-h-screen`}>
+      {children}
+      </body>
     </html>
   );
 }

@@ -70,10 +70,11 @@ export function GoogleRatingReviews({
       loading: true,
     }));
     const fetchData = async () => {
-      const request = await fetch(
-        `/api/google-rating-reviews?placeId=${placeId}`
-      );
-      const response = await request.json();
+      // const request = await fetch(
+      //   `/api/google-rating-reviews?placeId=${placeId}`
+      // );
+      // const response = await request.json();
+      const response = { rating: 4.5, name: '' };
       setResult({
         rating: response?.rating || 0,
         name: response?.name || '',

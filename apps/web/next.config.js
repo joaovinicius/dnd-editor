@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  serverExternalPackages: ['jsdom', 'isomorphic-dompurify'],
   // Fundamental para monorepos: garante que o Next transpile
   // o pacote local caso haja dependências de CSS ou JSX cru
   transpilePackages: ['@dnd-editor/core'],

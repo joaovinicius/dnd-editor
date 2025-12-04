@@ -1,19 +1,19 @@
 import dynamic from 'next/dynamic';
 import { type ConfigMap } from '@dnd-editor/core';
 
-// IMPORTANTE: Lazy loading dos componentes
-const Card = dynamic(() => import(/* webpackChunkName: "component-card" */ '../components/Card'));
-const Grid = dynamic(() => import(/* webpackChunkName: "component-grid" */ '../components/Grid'));
-const Hero = dynamic(() => import(/* webpackChunkName: "component-hero" */ '../components/Hero'));
-const HeroFull = dynamic(() => import(/* webpackChunkName: "component-hero-full" */ '../components/HeroFull'));
-const Features = dynamic(() => import(/* webpackChunkName: "component-features" */ '../components/Features'));
-const CallToAction = dynamic(() => import(/* webpackChunkName: "component-cta" */ '../components/CallToAction'));
+// IMPORTANT! Component lazy loading
+const Card = dynamic(() => import(/* webpackChunkName: "component-card" */ '../components/examples/Card'));
+const Grid = dynamic(() => import(/* webpackChunkName: "component-grid" */ '../components/examples/Grid'));
+const Hero = dynamic(() => import(/* webpackChunkName: "component-hero" */ '../components/examples/Hero'));
+const HeroFull = dynamic(() => import(/* webpackChunkName: "component-hero-full" */ '../components/examples/HeroFull'));
+const Features = dynamic(() => import(/* webpackChunkName: "component-features" */ '../components/examples/Features'));
+const CallToAction = dynamic(() => import(/* webpackChunkName: "component-cta" */ '../components/examples/CallToAction'));
 
 const Navbar = dynamic(
-  () => import(/* webpackChunkName: "component-navbar-wrapper" */ '../components/navbar/NavbarWrapper'),
+  () => import(/* webpackChunkName: "component-navbar-wrapper" */ '../components/examples/navbar/NavbarWrapper'),
 );
 const JlgNavbar = dynamic(
-  () => import(/* webpackChunkName: "component-jlg-navbar-wrapper" */ '../components/jlg-navbar/JlgNavbarWrapper')
+  () => import(/* webpackChunkName: "component-jlg-navbar-wrapper" */ '../components/examples/jlg-navbar/JlgNavbarWrapper')
 );
 
 export const config: ConfigMap = {

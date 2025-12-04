@@ -1,7 +1,7 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import { config } from '../../../config/dnd-editor.config';
+import { config } from '../../../config/nobulllaw.config';
 import '@dnd-editor/core/editor/index.css';
 
 // We import the editor dynamically to avoid bloating the main app bundle

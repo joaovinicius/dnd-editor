@@ -48,7 +48,7 @@ Uma aplicação Next.js completa que serve como vitrine e ambiente de desenvolvi
 
 -   `app/admin/editor/page.tsx`: Página que implementa o `<Editor />`, permitindo a criação e edição de layouts.
 -   `app/[[...slug]]/page.tsx`: Página dinâmica que usa o `<Renderer />` para exibir o conteúdo criado pelo editor em qualquer rota configurada.
--   `config/dnd-editor.config.tsx`: **Arquivo de configuração central**. É aqui que os componentes React customizados (como `<Hero />`, `<Card />`, etc.) são registrados para serem usados no editor.
+-   `config/example.config.tsx`: **Arquivo de configuração central**. É aqui que os componentes React customizados (como `<Hero />`, `<Card />`, etc.) são registrados para serem usados no editor.
 -   `components/`: Componentes React (ex: Hero, Card, Grid) que são os "blocos de montar" do nosso editor.
 
 ---
@@ -61,7 +61,7 @@ O fluxo de trabalho é dividido em três etapas principais: **Configuração**, 
 
 Tudo começa em um arquivo de configuração. Nele, você importa seus componentes React e define como o editor deve tratá-los.
 
-**Exemplo (`dnd-editor.config.tsx`):**
+**Exemplo (`example.config.tsx`):**
 
 ```tsx
 import dynamic from 'next/dynamic';

@@ -1,6 +1,6 @@
 'use client';
 
-import {useNavbar} from "../../hooks/useNavbar";
+import {useNavbar} from "../../../hooks/useNavbar";
 import {useMemo} from "react";
 
 export type NavbarProps = {
