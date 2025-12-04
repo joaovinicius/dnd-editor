@@ -4,7 +4,7 @@ import { sanitizedContent } from '../../../lib/string';
 import Image from "next/image";
 
 const NavbarWrapper = dynamic(
-  () => import(/* webpackChunkName: "component-jlg-navbar-wrapper" */ '../Navbar/navbar-wrapper'),
+  () => import(/* webpackChunkName: "component-navbar-wrapper" */ '../Navbar/navbar-wrapper'),
 );
 const GoogleRatingReviewsWrapper = dynamic(
   () => import(/* webpackChunkName: "component-google-rating-reviews-wrapper" */ '../GoogleRatingReviews/google-rating-reviews-wrapper'),
