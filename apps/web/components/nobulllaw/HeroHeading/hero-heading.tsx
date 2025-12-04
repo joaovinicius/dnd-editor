@@ -34,7 +34,7 @@ export function HeroHeading({ title,
   return (
     <div>
       <NavbarWrapper phone={other?.phone || 'X-XXX-XXX-XXXX'} />
-      <div className="relative w-full">
+      <div className="relative w-full mb-10">
         <Image
           src="https://d3secykhf0toyz.cloudfront.net/no-bull-law/live/static/hero-background.webp"
           width={1920}

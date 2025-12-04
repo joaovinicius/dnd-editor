@@ -28,7 +28,7 @@ export function AboutUs({
   advantages,
 }: AboutUsCardProps) {
   return (
-    <section className="relative flex flex-col gap-4 bg-white px-4 py-8 sm:rounded-2xl sm:px-8 md:gap-8 md:py-10 lg:px-16">
+    <section className="relative flex flex-col gap-4 bg-white px-4 py-8 sm:rounded-2xl sm:px-8 md:gap-8 md:py-10 lg:px-16 max-w-8xl mx-auto w-full md:w-[calc(100%-32px)] mb-10">
       <img
         src={picture}
         alt="Attorneys photo"

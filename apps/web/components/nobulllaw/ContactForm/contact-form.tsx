@@ -574,7 +574,7 @@ export function ContactForm(
           />
         </div>
         <Button
-          className="font-work-sans w-full cursor-pointer bg-[#0468B2] py-7 text-xl font-bold hover:bg-[#0468B2]/90"
+          className="font-work-sans w-full cursor-pointer bg-[#0468B2] py-7 text-xl font-bold hover:bg-[#0468B2]/90 text-white"
           type="submit"
           disabled={isSubmitting}
           aria-describedby="submit-description"

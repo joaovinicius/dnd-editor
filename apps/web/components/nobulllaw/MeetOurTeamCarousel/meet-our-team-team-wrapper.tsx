@@ -2,7 +2,7 @@
 
 import dynamic from 'next/dynamic';
 
-const MeetOutTeamTeamWrapper = (props) => {
+const MeetOurTeamTeamWrapper = (props) => {
   const LazyComponent = dynamic(
     () => import(/* webpackChunkName: "component-meet-our-team-carousel" */ './meet-our-team-carousel'),
     {
@@ -15,4 +15,4 @@ const MeetOutTeamTeamWrapper = (props) => {
   return <LazyComponent {...props} />;
 };
 
-export default MeetOutTeamTeamWrapper;
+export default MeetOurTeamTeamWrapper;

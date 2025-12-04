@@ -41,7 +41,7 @@ export function MeetOurTeamCarousel({ attorneys }: { attorneys: Attorney[] }) {
   }
 
   return (
-    <div className="bg-brand-primary w-full px-4 py-10 md:rounded-2xl md:px-8 lg:px-16">
+    <div className="bg-brand-primary px-4 py-10 md:rounded-2xl md:px-8 lg:px-16 max-w-8xl mx-auto w-full md:w-[calc(100%-32px)] mb-10">
       <Carousel opts={{ align: 'start' }} setApi={setApi} className="w-full">
         <CarouselContent className="gap-x-8">
           {attorneys.map((item) => (

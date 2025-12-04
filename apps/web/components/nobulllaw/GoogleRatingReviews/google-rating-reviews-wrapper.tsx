@@ -8,7 +8,7 @@ export default function GoogleRatingReviewsWrapper(props) {
     {
       ssr: false,
       loading: () => (
-        <div className="h-[420px] w-full rounded-2xl bg-gray-200/40" />
+        <div className="h-[130px] w-[217px] rounded-2xl bg-gray-200/40 mx-auto" />
       )
     }
   );

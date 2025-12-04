@@ -10,7 +10,7 @@ const Footer = dynamic(() => import(/* webpackChunkName: "component-footer" */ '
 
 const HeroHeading = dynamic(() => import(/* webpackChunkName: "component-hero" */ '../components/nobulllaw/HeroHeading/hero-heading'));
 
-const MeetOurTeamCarousel = dynamic(() => import(/* webpackChunkName: "component-meet-out-team-team-wrapper" */ '../components/nobulllaw/MeetOurTeamCarousel/meet-out-team--team-wrapper'));
+const MeetOurTeamCarousel = dynamic(() => import(/* webpackChunkName: "component-meet-our-team-team-wrapper" */ '../components/nobulllaw/MeetOurTeamCarousel/meet-our-team-team-wrapper'));
 
 export const config: ConfigMap = {
   aboutUs: {

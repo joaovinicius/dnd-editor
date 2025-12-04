@@ -2,8 +2,8 @@ import Logo from "../ui/logo";
 
 export function Footer() {
   return (
-    <footer className="bg-brand-primary mt-10">
-      <div className="max-w-8xl flex flex-col items-center justify-center gap-4 py-10 text-center text-white">
+    <footer className="bg-brand-primary">
+      <div className="max-w-8xl flex flex-col items-center justify-center gap-4 py-10 text-center text-white mx-auto">
         <Logo
           color="white"
           className="mx-auto h-auto max-w-[298px] min-w-[90px]"

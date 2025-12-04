@@ -6,7 +6,7 @@ export type InjuryCardProps  = {
 
 export function InjuryCard({ title, content, picture }: InjuryCardProps) {
   return (
-    <section className="flex flex-col gap-4 bg-white px-4 py-8 sm:rounded-2xl sm:px-8 md:flex-row md:gap-8 md:py-10 lg:px-16">
+    <section className="flex flex-col gap-4 bg-white px-4 py-8 sm:rounded-2xl sm:px-8 md:flex-row md:gap-8 md:py-10 lg:px-16 max-w-8xl mx-auto w-full md:w-[calc(100%-32px)] mb-10">
       <div className="order-last flex w-full flex-1 flex-col gap-4 sm:order-first">
         <h1 className="text-h1 text-center sm:text-left">{title}</h1>
         <div
