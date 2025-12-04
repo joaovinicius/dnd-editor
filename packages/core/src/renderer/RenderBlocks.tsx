@@ -1,11 +1,44 @@
 import styles from './style.module.css';
-import { PageDataBlock, ConfigMap } from '../types';
+import { PageDataBlock, ConfigMap, FieldDefinition } from '../types';
 import {Fragment, Suspense} from "react";
 
 interface RenderBlocksProps {
   blocks: PageDataBlock[];
   config: ConfigMap;
 }
+
+// Helper to recursively resolve slots in props (including nested objects/arrays)
+const resolveSlots = async (props: any, fields: Record<string, FieldDefinition>, config: ConfigMap): Promise<any> => {
+  if (!props || typeof props !== 'object') return props;
+  
+  const newProps = { ...props };
+
+  for (const [key, field] of Object.entries(fields)) {
+    if (field.type === 'slot') {
+      const childBlocks = props[key] as PageDataBlock[];
+      // Recursion: Render children HERE on the server
+      if (childBlocks && Array.isArray(childBlocks) && childBlocks.length > 0) {
+        newProps[key] = await RenderBlocks({
+          blocks: childBlocks,
+          config
+        });
+      } else {
+        newProps[key] = null;
+      }
+    } else if (field.type === 'object' && field.objectFields) {
+      if (props[key]) {
+        newProps[key] = await resolveSlots(props[key], field.objectFields, config);
+      }
+    } else if (field.type === 'array' && field.arrayFields) {
+      if (Array.isArray(props[key])) {
+        newProps[key] = await Promise.all(props[key].map(async (item: any) => {
+          return await resolveSlots(item, field.arrayFields!, config);
+        }));
+      }
+    }
+  }
+  return newProps;
+};
 
 export const RenderBlocks = async ({ blocks, config }: RenderBlocksProps) => {
   if (!blocks || !Array.isArray(blocks)) return null;
@@ -21,26 +54,16 @@ export const RenderBlocks = async ({ blocks, config }: RenderBlocksProps) => {
 
     const Component = componentConfig.component;
 
-    // --- THE PERFORMANCE MAGIC (Prop Transformation) ---
-    // We clone the props to avoid mutating the original
-    const resolvedProps: Record<string, any> = { ...block.props };
+    let resolvedProps = { ...block.props };
 
-    // We check the CONFIGURATION for fields of type 'slot' or recursive 'object'
-    // and pre-render their contents.
-    for (const field of componentConfig.fields) {
-      if (field.type === 'slot') {
-        const childBlocks = block.props[field.name] as PageDataBlock[];
-        // Recursion: Render children HERE on the server
-        if (childBlocks && childBlocks.length > 0) {
-          resolvedProps[field.name] = await RenderBlocks({
-            blocks: childBlocks,
-            config
-          });
-        } else {
-          resolvedProps[field.name] = null;
-        }
-      }
-      // Optional: If 'object' has slots inside, deeper recursion would be needed here.
+    // Resolve slots based on configuration type
+    if (componentConfig.type === 'object') {
+       resolvedProps = await resolveSlots(block.props, componentConfig.objectFields, config);
+    } else if (componentConfig.type === 'array') {
+       // No root-level field mapping for Array Component yet
+    } else {
+       // Standard component
+       resolvedProps = await resolveSlots(block.props, componentConfig.fields || {}, config);
     }
 
     // Returns the component with individual Suspense for Streaming

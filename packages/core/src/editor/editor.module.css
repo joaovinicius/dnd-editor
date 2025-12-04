@@ -551,3 +551,75 @@
   font-weight: 500;
   color: #6b7280;
 }
+
+/* --- Array Field Styles --- */
+.arrayContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem; /* Equivalent to gap-3 */
+  border: 1px solid #e5e7eb; /* gray-200 */
+  border-radius: 0.25rem; /* rounded-md */
+  padding: 0.75rem; /* p-3 */
+  background-color: #f9fafb; /* gray-50 */
+}
+
+.arrayEmptyState {
+  font-size: 0.75rem; /* text-xs */
+  color: #9ca3af;     /* gray-400 */
+  text-align: center;
+  padding: 0.5rem 0;
+}
+
+.arrayItem {
+  border: 1px solid #d1d5db; /* gray-300 */
+  border-radius: 0.25rem; /* rounded-md */
+  padding: 0.75rem; /* p-3 */
+  background-color: #ffffff; /* white */
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem; /* gap-2 */
+}
+
+.arrayItemHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem; /* mb-2 */
+}
+
+.arrayItemLabel {
+  font-size: 0.875rem; /* text-sm */
+  font-weight: 600;    /* font-semibold */
+  color: #374151;      /* gray-700 */
+}
+
+.arrayRemoveButton {
+  background-color: #ef4444; /* red-500 */
+  color: #ffffff;          /* white */
+  padding: 0.25rem 0.5rem; /* px-2 py-1 */
+  border-radius: 0.125rem; /* rounded-sm */
+  font-size: 0.75rem;      /* text-xs */
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.arrayRemoveButton:hover {
+  background-color: #dc2626; /* red-600 */
+}
+
+.arrayAddButton {
+  background-color: #2563eb; /* blue-600 */
+  color: #ffffff;          /* white */
+  padding: 0.5rem 1rem;    /* px-4 py-2 */
+  border-radius: 0.25rem;  /* rounded-md */
+  font-size: 0.875rem;     /* text-sm */
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  align-self: flex-start; /* Align to left/start */
+}
+
+.arrayAddButton:hover {
+  background-color: #1d4ed8; /* blue-700 */
+}

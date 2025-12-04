@@ -1,4 +1,4 @@
-import { ConfigMap, PageDataBlock } from '../types';
+import { ConfigMap, PageDataBlock, FieldDefinition, ComponentConfig } from '../types';
 
 /**
  * Analyzes the page data and returns a subset of the configuration
@@ -46,3 +46,34 @@ export function trimConfig(fullConfig: ConfigMap, blocks: PageDataBlock[]): Conf
 
   return trimmed;
 }
+
+export const generateDefaultProps = (fields: Record<string, FieldDefinition>): Record<string, any> => {
+  const props: Record<string, any> = {};
+  
+  for (const [key, field] of Object.entries(fields)) {
+    if (field.type === 'object' && field.objectFields) {
+      props[key] = generateDefaultProps(field.objectFields);
+    } else if (field.type === 'slot') {
+      props[key] = [];
+    } else if (field.type === 'array') {
+      props[key] = field.defaultValue || [];
+    } else {
+      props[key] = field.defaultValue;
+    }
+  }
+  
+  return props;
+};
+
+export const generateComponentDefaultProps = (config: ComponentConfig): Record<string, any> => {
+  if (config.type === 'object') {
+    return generateDefaultProps(config.objectFields);
+  } else if (config.type === 'array') {
+    // For array components, we don't generate default props for the items here.
+    // The component likely expects an empty state or specific init.
+    return {}; 
+  } else {
+    // Standard component
+    return generateDefaultProps(config.fields || {});
+  }
+};

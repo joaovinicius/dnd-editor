@@ -22,7 +22,7 @@ import { GripVertical, Trash, ChevronRight, Layers } from 'lucide-react';
 import { clsx } from 'clsx';
 
 // Internal Imports
-import { ConfigMap, PageData, PageDataBlock, FieldDefinition } from '../types';
+import { ConfigMap, PageData, PageDataBlock, FieldDefinition, ComponentConfig } from '../types';
 import { FieldRenderer } from './FieldRenderer';
 import { EditorContext } from './EditorContext';
 import { SlotField } from './SlotField';
@@ -31,6 +31,7 @@ import editor from './editor.module.css';
 
 // Tree utilities (ensure they exist at src/utils/tree.ts)
 import { findContainer, findPathToNode, findBlockById } from '../utils/tree';
+import { generateComponentDefaultProps } from '../utils/config';
 
 // --- Local State Mutation Helpers ---
 
@@ -67,18 +68,7 @@ const removeBlockFromTree = (blocks: PageDataBlock[], id: string): PageDataBlock
   });
 };
 
-const generateDefaultProps = (fields: FieldDefinition[]): Record<string, any> => {
-  return fields.reduce((acc, field) => {
-    if (field.type === 'object' && field.fields) {
-      acc[field.name] = generateDefaultProps(field.fields);
-    } else if (field.type === 'slot') {
-      acc[field.name] = [];
-    } else {
-      acc[field.name] = field.defaultValue;
-    }
-    return acc;
-  }, {} as Record<string, any>);
-};
+
 
 /* --- Sidebar Item Component --- */
 const DraggableSidebarItem = ({ type, label }: { type: string, label: string }) => {
@@ -218,7 +208,7 @@ export const PageEditor = ({ config, initialData, onSave }: EditorProps) => {
       const newBlock: PageDataBlock = {
         id: nanoid(),
         type,
-        props: generateDefaultProps(config[type].fields)
+        props: generateComponentDefaultProps(config[type])
       };
 
       setBlocks(prev => {
@@ -293,6 +283,46 @@ export const PageEditor = ({ config, initialData, onSave }: EditorProps) => {
   const selectedBlock = selectedBlockId ? findBlockById(blocks, selectedBlockId) : null;
   const selectedBlockConfig = selectedBlock ? config[selectedBlock.type] : null;
 
+  const renderPropertiesForm = (cfg: ComponentConfig) => {
+    if (cfg.type === 'array') {
+      // Special handling for Array Component - Render a synthetic "items" field
+      const fakeField: FieldDefinition = {
+        type: 'array',
+        label: 'Items',
+        arrayFields: cfg.arrayFields
+      };
+      return (
+        <div className={editor.fieldGroup}>
+          <label className={editor.label}>Items</label>
+          <FieldRenderer 
+            name="items"
+            field={fakeField} 
+            value={selectedBlock!.props.items} 
+            onChange={(val) => handleUpdateProps(selectedBlock!.id, { items: val })} 
+          />
+        </div>
+      );
+    }
+
+    const fields = cfg.type === 'object' ? cfg.objectFields : (cfg.fields || {});
+    
+    if (Object.keys(fields).length === 0) {
+       return <p className={editor.noProperties}>Este componente não possui propriedades.</p>;
+    }
+
+    return Object.entries(fields).map(([key, field]) => (
+      <div key={key} className={editor.fieldGroup}>
+        <label className={editor.label}>{field.label}</label>
+        <FieldRenderer
+          name={key}
+          field={field}
+          value={selectedBlock!.props[key]}
+          onChange={(val) => handleUpdateProps(selectedBlock!.id, { [key]: val })}
+        />
+      </div>
+    ));
+  };
+
   const dropAnimation: DropAnimation = {
     sideEffects: defaultDropAnimationSideEffects({ styles: { active: { opacity: '0.5' } } }),
   };
@@ -343,7 +373,7 @@ export const PageEditor = ({ config, initialData, onSave }: EditorProps) => {
           <div className={editor.properties}>
             <h3 className={editor.panelTitle}>Propriedades</h3>
 
-            {selectedBlock ? (
+            {selectedBlock && selectedBlockConfig ? (
               <div className={editor.propertiesContent}>
 
                 {/* Breadcrumbs (Hierarchical Navigation) */}
@@ -377,7 +407,7 @@ export const PageEditor = ({ config, initialData, onSave }: EditorProps) => {
                 <div className={editor.propHeaderRow}>
                   <div>
                     <p className={editor.propHeaderLabel}>Editando</p>
-                    <p className={editor.propHeaderName}>{config[selectedBlock.type].label}</p>
+                    <p className={editor.propHeaderName}>{selectedBlockConfig.label}</p>
                   </div>
                   <button
                     onClick={() => handleRemove(selectedBlock.id)}
@@ -389,20 +419,8 @@ export const PageEditor = ({ config, initialData, onSave }: EditorProps) => {
                 </div>
 
                 {/* Input Fields */}
-                {config[selectedBlock.type].fields.map(field => (
-                  <div key={field.name} className={editor.fieldGroup}>
-                    <label className={editor.label}>{field.label}</label>
-                    <FieldRenderer
-                      field={field}
-                      value={selectedBlock.props[field.name]}
-                      onChange={(val) => handleUpdateProps(selectedBlock.id, { [field.name]: val })}
-                    />
-                  </div>
-                ))}
+                {renderPropertiesForm(selectedBlockConfig)}
 
-                {config[selectedBlock.type].fields.length === 0 && (
-                  <p className={editor.noProperties}>Este componente não possui propriedades.</p>
-                )}
               </div>
             ) : (
               <p className={editor.propEmptyState}>Selecione um bloco para editar</p>

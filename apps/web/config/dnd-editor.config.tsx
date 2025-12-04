@@ -2,8 +2,8 @@ import dynamic from 'next/dynamic';
 import { type ConfigMap } from '@dnd-editor/core';
 
 // IMPORTANTE: Lazy loading dos componentes
-const Card = dynamic(() => import(/* webpackChunkName: "component-card" */ '../components/Card')); // Novo
-const Grid = dynamic(() => import(/* webpackChunkName: "component-grid" */ '../components/Grid')); // Novo
+const Card = dynamic(() => import(/* webpackChunkName: "component-card" */ '../components/Card'));
+const Grid = dynamic(() => import(/* webpackChunkName: "component-grid" */ '../components/Grid'));
 const Hero = dynamic(() => import(/* webpackChunkName: "component-hero" */ '../components/Hero'));
 const HeroFull = dynamic(() => import(/* webpackChunkName: "component-hero-full" */ '../components/HeroFull'));
 const Features = dynamic(() => import(/* webpackChunkName: "component-features" */ '../components/Features'));
@@ -20,93 +20,77 @@ export const config: ConfigMap = {
   grid: {
     component: Grid,
     label: 'Grid Layout',
-    fields: [
-      {
-        name: 'columns',
+    fields: {
+      columns: {
         label: 'Número de Colunas',
-        type: 'number',
+        type: 'number' as const,
         defaultValue: 2
       },
-      {
-        name: 'gap',
+      gap: {
         label: 'Espaçamento (Gap)',
-        type: 'number',
+        type: 'number' as const,
         defaultValue: 8
       },
-      // Define a área onde outros componentes serão jogados
-      {
-        name: 'children',
+      children: {
         label: 'Conteúdo do Grid',
-        type: 'slot'
+        type: 'slot' as const
       }
-    ]
+    }
   },
   navbar: {
     component: Navbar,
     label: 'Navbar',
-    fields: [
-      { name: 'phone', label: 'Telefone', type: 'text', defaultValue: '1-833-662-8550' }
-    ]
+    fields: {
+      phone: { label: 'Telefone', type: 'text' as const, defaultValue: '1-833-662-8550' }
+    }
   },
   jlgNavbar: {
     component: JlgNavbar,
     label: 'Navbar',
-    fields: [
-      { name: 'phone', label: 'Telefone', type: 'text', defaultValue: '1-888-888-8888' }
-    ]
+    fields: {
+      phone: { label: 'Telefone', type: 'text' as const, defaultValue: '1-888-888-8888' }
+    }
   },
-  // 2. Configuração do Card
   card: {
     component: Card,
     label: 'Card Container',
-    fields: [
-      {
-        name: 'title',
+    fields: {
+      title: {
         label: 'Título do Card',
-        type: 'text',
+        type: 'text' as const,
         defaultValue: 'Meu Título'
       },
-      // Define a área interna do card
-      {
-        name: 'children',
+      children: {
         label: 'Conteúdo Interno',
-        type: 'slot'
+        type: 'slot' as const
       }
-    ]
+    }
   },
   hero: {
     component: Hero,
     label: 'Hero Section',
-    fields: [
-      { name: 'title', label: 'Título', type: 'text', defaultValue: 'Hello World' },
-      { name: 'padding', label: 'Padding (px)', type: 'number', defaultValue: 40 }
-    ]
+    fields: {
+      title: { label: 'Título', type: 'text' as const, defaultValue: 'Hello World' },
+      padding: { label: 'Padding (px)', type: 'number' as const, defaultValue: 40 }
+    }
   },
   heroFull: {
     component: HeroFull,
     label: 'Hero Completo',
-    fields: [
-      // 1. Testando TEXTAREA (multilinha)
-      {
-        name: 'title',
+    fields: {
+      title: {
         label: 'Título Principal',
-        type: 'textarea',
+        type: 'textarea' as const,
         defaultValue: 'Crie layouts incríveis\ncom alta performance.'
       },
-
-      // 2. Campo simples
-      {
-        name: 'description',
+      description: {
         label: 'Subtítulo',
-        type: 'text',
+        type: 'text' as const,
         defaultValue: 'Este é um exemplo de componente complexo.'
       },
-
-      // 3. Testando RADIO (opções visuais)
-      {
-        name: 'align',
+      align: {
         label: 'Alinhamento',
-        type: 'radio',
+        type: 'radio' as const,
         defaultValue: 'center',
         options: [
           { label: 'Esquerda', value: 'left' },
@@ -114,63 +98,58 @@ export const config: ConfigMap = {
           { label: 'Direita', value: 'right' }
         ]
       },
-
-      {
-        name: 'padding',
+      padding: {
         label: 'Espaçamento Vertical',
-        type: 'number',
+        type: 'number' as const,
         defaultValue: 80
       },
-
-      // 4. Testando OBJECT (Campos Aninhados / Recursividade)
-      {
-        name: 'cta',
+      cta: {
         label: 'Botão de Ação',
-        type: 'object',
-        // O defaultValue aqui ajuda, mas nossa função generateDefaultProps
-        // no editor já cuida de criar a estrutura se estiver vazio
+        type: 'object' as const,
         defaultValue: { label: 'Começar Agora', style: 'solid' },
-        fields: [
-          {
-            name: 'label',
+        objectFields: {
+          label: {
             label: 'Texto do Botão',
-            type: 'text',
+            type: 'text' as const,
             defaultValue: 'Saiba Mais'
           },
-          {
-            name: 'href',
+          href: {
             label: 'Link (URL)',
-            type: 'text',
+            type: 'text' as const,
             defaultValue: '#'
           },
-          {
-            name: 'style',
+          style: {
             label: 'Estilo Visual',
-            type: 'radio', // Radio dentro de Object!
+            type: 'radio' as const,
             defaultValue: 'solid',
             options: [
               { label: 'Sólido (Azul)', value: 'solid' },
               { label: 'Borda (Outline)', value: 'outline' }
             ]
           }
-        ]
+        }
       }
-    ]
+    }
   },
   features: {
     component: Features,
     label: 'Lista de Features',
-    fields: [
-      { name: 'title', label: 'Título da Seção', type: 'text', defaultValue: 'Por que nós?' },
-      { name: 'activeColor', label: 'Cor dos Ícones', type: 'color', defaultValue: '#2563eb' }
-    ]
+    fields: {
+      title: { label: 'Título da Seção', type: 'text' as const, defaultValue: 'Por que nós?' },
+      activeColor: { label: 'Cor dos Ícones', type: 'color' as const, defaultValue: '#2563eb' }
+    }
   },
   cta: {
     component: CallToAction,
     label: 'Chamada para Ação',
-    fields: [
-      { name: 'text', label: 'Texto do Botão', type: 'text', defaultValue: 'Clique aqui' },
-      { name: 'url', label: 'URL', type: 'select', defaultValue: '#', options: [{ label: 'Home', value: '/' }, { label: 'Sobre', value: '/sobre' }] }
-    ]
+    fields: {
+      text: { label: 'Texto do Botão', type: 'text' as const, defaultValue: 'Clique aqui' },
+      url: { 
+        label: 'URL', 
+        type: 'select' as const, 
+        defaultValue: '#', 
+        options: [{ label: 'Home', value: '/' }, { label: 'Sobre', value: '/sobre' }] 
+      }
+    }
   }
 };

@@ -46,8 +46,8 @@ O coração da biblioteca. Este é o pacote que será publicado no NPM. Ele não
 
 Uma aplicação Next.js completa que serve como vitrine e ambiente de desenvolvimento para o `@dnd-editor/core`.
 
--   `app/admin/editor/page.tsx.bkp`: Página que implementa o `<Editor />`, permitindo a criação e edição de layouts.
--   `app/page.tsx.bkp`: Página que provavelmente usa o `<Renderer />` para exibir o conteúdo criado pelo editor.
+-   `app/admin/editor/page.tsx`: Página que implementa o `<Editor />`, permitindo a criação e edição de layouts.
+-   `app/[[...slug]]/page.tsx`: Página dinâmica que usa o `<Renderer />` para exibir o conteúdo criado pelo editor em qualquer rota configurada.
 -   `config/dnd-editor.config.tsx`: **Arquivo de configuração central**. É aqui que os componentes React customizados (como `<Hero />`, `<Card />`, etc.) são registrados para serem usados no editor.
 -   `components/`: Componentes React (ex: Hero, Card, Grid) que são os "blocos de montar" do nosso editor.
 
@@ -64,30 +64,25 @@ Tudo começa em um arquivo de configuração. Nele, você importa seus component
 **Exemplo (`dnd-editor.config.tsx`):**
 
 ```tsx
-import type { DnDEditorConfig } from '@dnd-editor/core';
-import { Hero } from '../components/Hero';
+import dynamic from 'next/dynamic';
+import { type ConfigMap } from '@dnd-editor/core';
 
-// Definição de tipos para as props do componente Hero
-type HeroProps = {
-  title: string;
-  description: string;
-};
+// Importação dinâmica dos componentes (recomendado para Code Splitting)
+const Hero = dynamic(() => import('../components/Hero'));
 
-// Registro do componente no editor
-export const config: DnDEditorConfig<HeroProps> = {
-  components: {
-    hero: {
-      label: 'Hero Section',
-      // Mapeamento do componente React real
-      render: Hero,
-      // Definição dos campos que aparecerão no painel de propriedades
-      fields: {
-        title: { type: 'text', label: 'Título' },
-        description: { type: 'textarea', label: 'Descrição' },
-      },
-    },
-    // ... outros componentes
+// Registro dos componentes no editor
+export const config: ConfigMap = {
+  hero: {
+    label: 'Hero Section',
+    // Componente React real
+    component: Hero,
+    // Definição dos campos que aparecerão no painel de propriedades
+    fields: [
+      { name: 'title', label: 'Título', type: 'text', defaultValue: 'Bem-vindo' },
+      { name: 'description', label: 'Descrição', type: 'textarea', defaultValue: 'Texto descritivo...' },
+    ]
   },
+  // ... outros componentes
 };
 ```
 
@@ -105,7 +100,7 @@ Ao final, o editor produz uma estrutura de dados JSON que descreve o layout e as
 
 ```json
 {
-  "root": [
+  "blocks": [
     {
       "id": "block-1",
       "type": "hero",
@@ -124,23 +119,25 @@ Este é o componente mais importante para a performance. Ele recebe o `config` e
 
 **No lado do Servidor (SSR):**
 
-O `<Renderer />` itera sobre a `data`, identifica os `type` de cada bloco (ex: "hero"), busca o componente correspondente no `config` e o renderiza com as `props` fornecidas. O resultado é um HTML puro, servido rapidamente ao usuário.
+O `<PageRenderer />` itera sobre a `data`, identifica os `type` de cada bloco (ex: "hero"), busca o componente correspondente no `config` e o renderiza com as `props` fornecidas.
 
 **No lado do Cliente (Hidratação e Code Splitting):**
 
-O renderizador é inteligente. Ele **não** importa todos os componentes do `config`. Em vez disso, ele analisa a `data` e carrega dinamicamente (usando `React.lazy` ou `next/dynamic`) **apenas** os componentes necessários para aquela página específica. Isso garante que o bundle de JavaScript seja o menor possível.
+O renderizador é inteligente. Com a função `trimConfig`, ele filtra o `config` para manter apenas os componentes que estão sendo usados na página atual. Isso garante que o bundle de JavaScript seja o menor possível.
 
 **Exemplo de uso:**
 
 ```tsx
-import { Renderer } from '@dnd-editor/core';
-import { config } from '../config/dnd-editor.config';
+import { trimConfig } from "@dnd-editor/core";
+import { PageRenderer } from "@dnd-editor/core/renderer";
+import { config } from "../../config/dnd-editor.config";
 
 // data viria de uma API ou de um arquivo
-const data = await getPageData(); 
+const data = await getPageData();
+const trimmedConfig = trimConfig(config, data.blocks);
 
-export default function PageTsx() {
-  return <Renderer config={config} data={data} />;
+export default function Page() {
+  return <PageRenderer config={trimmedConfig} data={data} />;
 }
 ```
 
