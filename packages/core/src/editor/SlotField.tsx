@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
 import { useDroppable } from '@dnd-kit/core';
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
-import { clsx } from 'clsx';
 import { PageDataBlock } from '../types';
 import { SortableBlock } from './SortableBlock';
 import { useBlockContext } from './BlockContext';
 import { EditorContext } from './EditorContext';
+import editor from './editor.module.css';
 
 interface SlotFieldProps {
   name: string;
@@ -29,13 +29,7 @@ export const SlotField = ({ name, blocks }: SlotFieldProps) => {
   return (
     <div
       ref={setNodeRef}
-      className={clsx(
-        "slotField",
-        // Apply Root OR Nested style
-        isRoot ? "slotRoot" : "slotNested",
-        // Apply Hover style if dragging over
-        isOver && "slotOver"
-      )}
+      className={`${editor.slotField} ${isRoot ? editor.slotRoot : editor.slotNested} ${isOver ? editor.slotOver : ''}`}
     >
       <SortableContext
         id={dropZoneId}
@@ -59,7 +53,7 @@ export const SlotField = ({ name, blocks }: SlotFieldProps) => {
         ))}
 
         {blocks.length === 0 && (
-          <div className="slotEmpty">
+          <div className={editor.slotEmpty}>
             {isRoot ? "Drag components here to start" : `Slot: ${name} (Empty)`}
           </div>
         )}

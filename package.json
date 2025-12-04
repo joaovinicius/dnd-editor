@@ -5,7 +5,7 @@
     "node": ">=18"
   },
   "scripts": {
-    "build": "pnpm build:core && pnpm build:web",
+    "build": "pnpm build:web",
     "build:core": "pnpm --filter @dnd-editor/core build",
     "build:web": "pnpm --filter web build",
     "start": "pnpm --filter web start",

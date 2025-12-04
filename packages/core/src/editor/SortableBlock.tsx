@@ -2,7 +2,6 @@ import React, { Suspense } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { Trash, ArrowUp, ArrowDown, GripVertical, CornerLeftUp } from 'lucide-react';
-import { clsx } from 'clsx';
 import { PageDataBlock, ConfigMap } from '../types';
 import { BlockContext } from './BlockContext';
 import editor from './editor.module.css';
@@ -61,11 +60,7 @@ export const SortableBlock = ({
     <div
       ref={setNodeRef}
       style={style}
-      className={clsx(
-        editor.sortableItem,
-        isSelected && editor.selected
-        // We removed the 'group' class from Tailwind, the CSS Module handles :hover
-      )}
+      className={`${editor.sortableItem} ${isSelected ? editor.selected : ''}`}
       onClick={handleClick}
       data-block-id={block.id}
     >
@@ -103,14 +98,14 @@ export const SortableBlock = ({
         <div
           {...attributes}
           {...listeners}
-          className={clsx(editor.actionButton, editor.dragHandle)}
+          className={`${editor.actionButton} ${editor.dragHandle}`}
           title="Drag"
         >
           <GripVertical size={14} />
         </div>
 
         <button
-          className={clsx(editor.actionButton, editor.deleteButton)}
+          className={`${editor.actionButton} ${editor.deleteButton}`}
           onClick={(e) => { e.stopPropagation(); onRemove(block.id); }}
           title="Remove"
         >

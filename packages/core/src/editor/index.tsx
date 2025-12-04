@@ -19,7 +19,6 @@ import {
 import { arrayMove } from '@dnd-kit/sortable';
 import { nanoid } from 'nanoid';
 import { GripVertical, Trash, ChevronRight, Layers } from 'lucide-react';
-import { clsx } from 'clsx';
 
 // Internal Imports
 import { ConfigMap, PageData, PageDataBlock, FieldDefinition, ComponentConfig } from '../types';
@@ -391,10 +390,7 @@ export const PageEditor = ({ config, initialData, onSave }: EditorProps) => {
                       <ChevronRight size={10} className={editor.breadcrumbChevron} />
                       <button
                         onClick={() => setSelectedBlockId(node.id)}
-                        className={clsx(
-                          "breadcrumbButton",
-                          node.id === selectedBlockId && "breadcrumbButtonActive"
-                        )}
+                        className={`${editor.breadcrumbButton} ${node.id === selectedBlockId ? editor.breadcrumbButtonActive : ''}`}
                         title={config[node.type]?.label || node.type}
                       >
                         {config[node.type]?.label || node.type}
@@ -437,7 +433,7 @@ export const PageEditor = ({ config, initialData, onSave }: EditorProps) => {
         {/* OVERLAY: Floating item during drag */}
         <DragOverlay dropAnimation={dropAnimation}>
           {activeDragItem ? (
-            <div className={clsx(editor.draggableItem, editor.overlayItem)}>
+            <div className={`${editor.draggableItem} ${editor.overlayItem}`}>
               {activeDragItem.label || "Movendo..."}
             </div>
           ) : null}
