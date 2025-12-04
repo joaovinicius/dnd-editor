@@ -7,6 +7,8 @@ const nextConfig = {
   images: {
     remotePatterns: [
       new URL('https://images.unsplash.com/**'),
+      new URL('https://d3secykhf0toyz.cloudfront.net/**'),
+      new URL('https://johnsonlawgroup.s3.us-east-1.amazonaws.com/**'),
     ]
   },
 };

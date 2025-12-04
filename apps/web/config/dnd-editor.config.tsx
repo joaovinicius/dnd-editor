@@ -9,8 +9,12 @@ const HeroFull = dynamic(() => import(/* webpackChunkName: "component-hero-full"
 const Features = dynamic(() => import(/* webpackChunkName: "component-features" */ '../components/Features'));
 const CallToAction = dynamic(() => import(/* webpackChunkName: "component-cta" */ '../components/CallToAction'));
 
-const Navbar = dynamic(() => import(/* webpackChunkName: "component-navbar" */ '../components/NavbarWrapper'));
-const JlgNavbar = dynamic(() => import(/* webpackChunkName: "component-jlg-navbar" */ '../components/JlgNavbarWrapper'));
+const Navbar = dynamic(
+  () => import(/* webpackChunkName: "component-navbar-wrapper" */ '../components/navbar/NavbarWrapper'),
+);
+const JlgNavbar = dynamic(
+  () => import(/* webpackChunkName: "component-jlg-navbar-wrapper" */ '../components/jlg-navbar/JlgNavbarWrapper')
+);
 
 export const config: ConfigMap = {
   grid: {

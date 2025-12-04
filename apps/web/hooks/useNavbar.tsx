@@ -1,14 +1,11 @@
-'use client';
+'use client'
 
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-
-export type NavbarProps = {
-  phone?: string;
-}
+import {useCallback, useEffect, useRef, useState} from "react";
 
 const scrollYPositionTrigger = 130;
 
-export default function Navbar({ phone = '1-833-662-8550' }: NavbarProps) {
+export function useNavbar() {
+
   const [isScrolled, setIsScrolled] = useState(false);
 
   // Lightweight rAF-based throttle to avoid pulling lodash/throttle
@@ -24,8 +21,6 @@ export default function Navbar({ phone = '1-833-662-8550' }: NavbarProps) {
     });
   }, []);
 
-  const onlyNumberPhone = useMemo(() => phone.replace(/[^\d]/g, ''), [phone]);
-
   useEffect(() => {
     // Sync initial state on mount to prevent visual jump
     handleScroll();
@@ -36,10 +31,5 @@ export default function Navbar({ phone = '1-833-662-8550' }: NavbarProps) {
     };
   }, [handleScroll]);
 
-  return (
-    <nav className={`flex justify-between items-center fixed top-0 py-4 px-vw-1 left-0 right-0 z-50 transition-all min-h-20 duration-500 text-black ${isScrolled ? 'bg-white' : 'bg-red-300'}`}>
-      <h1>LOGO</h1>
-      <a href={`tel:+${onlyNumberPhone}`}>{phone}</a>
-    </nav>
-  );
+  return isScrolled;
 }

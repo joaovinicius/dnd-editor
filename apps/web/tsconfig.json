@@ -30,6 +30,9 @@
     "**/*.tsx",
     ".next/dev/types/**/*.ts"
   ],
+  "paths": {
+    "@/*": ["./*"]
+  },
   "exclude": [
     "node_modules"
   ]

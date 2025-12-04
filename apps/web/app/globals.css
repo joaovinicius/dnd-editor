@@ -1,14 +1,213 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+@theme {
+  --container-8xl: 88rem;
+
+  --spacing-vw-1: 4vw;
+  --spacing-vw-2: 8vw;
+
+  /* h1 */
+  --font-size-h1: clamp(2.28rem, 5vw, 3.136rem);
+  --line-height-h1: 1.2;
+
+  /* h2 */
+  --font-size-h2: clamp(1.6rem, 3.5vw, 1.618rem);
+  --line-height-h2: 1.3;
+
+  /* h3 */
+  --font-size-h3: clamp(1.4rem, 2.5vw, 1.618rem);
+  --line-height-h3: 1.4;
+
+  /* Paragraphs */
+  --font-size-paragraph: clamp(1rem, 1.5vw, 1.25rem);
+  --line-height-p: 1.5;
+
+  /* Small */
+  --font-size-small: clamp(0.8rem, 1vw, 1rem);
+  --line-height-small: 1.4;
+
+  --color-brand-background: #f4f3ed;
+  --color-brand-primary: #ac2b2e;
+  --color-brand-background-secondary: #eaf6ff;
+  --color-brand-base: #333333;
+
+  --color-brand-faq: #e5f4ff;
+  --color-brand-faq-hover: #0468b2;
+
+  --color-jlg-background: white;
+  --color-jlg-dark: #27252b;
+  --color-jlg-primary: #006df9;
+  --color-jlg-primary-lightest: #eff6ff;
+  --color-jlg-primary-mid: #2788ff;
+  --color-jlg-primary-dark: #0049a3;
+  --color-jlg-primary-darken: #002552;
+  --color-jlg-primary-light: #c9e1ff;
+  --color-jlg-muted-medium: #616060;
+  --color-jlg-muted-medium-light: #dfe0e2;
+
+  --font-family-work-sans: 'Work Sans';
+  --font-family-montserrat: 'Montserrat';
+  --font-family-eb-garamond: 'EB Garamond';
+  --font-family-poppins: 'Poppins';
+
+  --animate-slide-down: slide-down .3s ease-out;
+  --animate-slide-up: slide-up .3s ease-out;
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: white;
+@utility text-h1 {
+  @apply font-bold;
+  font-size: var(--font-size-h1);
+  line-height: var(--line-height-h1);
+}
+
+@utility text-h2 {
+  @apply font-bold;
+  font-size: var(--font-size-h2);
+  line-height: var(--line-height-h2);
+}
+
+@utility text-h3 {
+  @apply font-bold;
+  font-size: var(--font-size-h3);
+  line-height: var(--line-height-h3);
+}
+
+@utility text-paragraph {
+  font-size: var(--font-size-paragraph);
+  line-height: var(--line-height-p);
+}
+
+@utility text-small {
+  font-size: var(--font-size-small);
+  line-height: var(--line-height-small);
+}
+
+@layer base {
+  * {
+    /* @apply outline-ring/50; */ /* Removed to fix Tailwind CSS v4 unknown utility class error */
+  }
+
+  html {
+    /* Avoid global smooth scrolling which can hurt INP; opt-in via a class instead */
+    scroll-behavior: auto;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-bold;
+  }
+
+  .bg-jlg-background * {
+    @apply font-montserrat;
+  }
+
+  .bg-brand-background h1,
+  .bg-brand-background h2,
+  .bg-brand-background h3,
+  .bg-brand-background .text-h1,
+  .bg-brand-background .text-h2,
+  .bg-brand-background .text-h3 {
+    @apply text-brand-primary;
+    @apply font-work-sans;
+  }
+
+  .bg-jlg-background * {
+    @apply font-poppins;
+  }
+
+  .bg-jlg-background h1,
+  .bg-jlg-background h2,
+  .bg-jlg-background h3,
+  .bg-jlg-background .text-h1,
+  .bg-jlg-background .text-h2,
+  .bg-jlg-background .text-h3 {
+    @apply text-jlg-primary-darken;
+    @apply font-eb-garamond;
+  }
+
+  h1 {
+    font-size: var(--font-size-h1);
+    line-height: var(--line-height-h1);
+  }
+
+  h2 {
+    font-size: var(--font-size-h2);
+    line-height: var(--line-height-h2);
+  }
+
+  h3 {
+    font-size: var(--font-size-h3);
+    line-height: var(--line-height-h3);
+  }
+
+  p {
+    font-size: var(--font-size-paragraph);
+    line-height: var(--line-height-p);
+  }
+
+  small {
+    font-size: var(--font-size-small);
+    line-height: var(--line-height-small);
+  }
+}
+
+/* Avoid global transitions that can hurt INP and cause layout thrash.
+   Opt-in to transitions locally where necessary. */
+
+/* Utility class to enable smooth scroll only where explicitly needed */
+.smooth-scroll {
+  scroll-behavior: smooth;
+}
+
+@utility font-work-sans {
+  font-family: var(--font-family-work-sans), sans-serif;
+}
+
+@utility font-montserrat {
+  font-family: var(--font-family-montserrat), sans-serif;
+}
+
+@utility font-eb-garamond {
+  font-family: var(--font-family-eb-garamond), serif;
+}
+
+@utility font-poppins {
+  font-family: var(--font-family-poppins), sans-serif;
+}
+
+
+@utility text-h1 {
+  @apply font-work-sans;
+}
+
+@utility text-h2 {
+  @apply font-work-sans;
+}
+
+@utility text-h3 {
+  @apply font-work-sans;
+}
+
+@utility text-fit {
+  /* clamp(MIN, IDEAL, MAX) */
+  font-size: clamp(0.75rem, 15cqw, 4rem);
+}
+
+.bg-brand-background input:focus-visible,
+.bg-brand-background textarea:focus-visible,
+.bg-brand-background select:focus-visible {
+  outline: -webkit-focus-ring-color auto 1px;
+  box-sizing: border-box;
+}
+
+.consent-terms,
+.consent-terms p {
+  @apply text-xs;
+  @apply text-black/45;
+}
+
+.consent-terms a {
+  @apply text-brand-primary;
+  @apply underline;
 }

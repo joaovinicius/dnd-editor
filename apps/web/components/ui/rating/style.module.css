@@ -1,0 +1,46 @@
+.wrapper {
+  position: relative;
+  display: inline-block;
+  height: calc(26px * var(--rating-size-mobile));
+  width: calc(138px * var(--rating-size-mobile));
+}
+
+.starsBase,
+.starsFill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: calc(26px * var(--rating-size-mobile));
+  width: calc(138px * var(--rating-size-mobile));
+}
+
+.starsOutline {
+  stroke: #d9d9d9;
+}
+
+.starsFilled {
+  fill: #ffc31d;
+}
+
+.starWrapper {
+    left: calc((100% - 200px)/2)
+}
+
+/* Responsividade */
+@media (min-width: var(--breakpoint-md)) and (max-width: var(--breakpoint-lg)) {
+  .wrapper,
+  .starsBase,
+  .starsFill {
+    height: calc(26px * var(--rating-size-tablet));
+    width: calc(138px * var(--rating-size-tablet));
+  }
+}
+
+@media (min-width: var(--breakpoint-lg)) {
+  .wrapper,
+  .starsBase,
+  .starsFill {
+    height: calc(26px * var(--rating-size-desktop));
+    width: calc(138px * var(--rating-size-desktop));
+  }
+}
